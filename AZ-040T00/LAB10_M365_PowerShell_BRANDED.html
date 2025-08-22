@@ -1,0 +1,194 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skunkworks • AZ-040 Cheat Sheet — Managing Microsoft 365 with PowerShell</title>
+<style>
+:root{--bg:#fcfcfe;--card:#ffffff;--ink:#0b1220;--muted:#5d6b83;--accent:#2563eb;--chip:#eef2ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg),#f7faff)}
+.container{max-width:1100px;margin:auto;padding:28px}
+.header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.logo{width:36px;height:36px;border-radius:10px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:700}
+.brand{font-weight:700;letter-spacing:.3px}
+.spacer{flex:1}
+.badge{font-weight:600;font-size:12px;color:#1f2937;background:var(--chip);border:1px solid #d1d5ff;padding:6px 10px;border-radius:999px}
+.h1{font-size:28px;margin:10px 0 4px 0}
+.sub{color:var(--muted);margin:0 0 16px 0}
+.card{background:var(--card);border:1px solid #e6eaf5;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 1px 0 rgba(12,23,41,.03)}
+h2{font-size:18px;margin:0 0 8px;color:#0b1220}
+p{color:var(--muted);margin:6px 0 12px;line-height:1.55}
+ul{margin:0 0 0 20px}
+li{margin:6px 0}
+.code{background:#0b122005;border:1px solid #e7e9f2;border-radius:12px;padding:12px;overflow:auto}
+pre,code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.kv{display:flex;gap:8px;flex-wrap:wrap}
+.kv span{background:var(--chip);border:1px solid #d1d5ff;border-radius:999px;padding:6px 10px;font-size:12px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #edf0f7;padding:10px 8px;text-align:left;vertical-align:top}
+.table th{color:#111827}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.footer{font-size:12px;color:#6b7280;margin-top:14px}
+hr{border:0;border-top:1px solid #e6eaf5;margin:18px 0}
+kbd{border:1px solid #c7ccdb;border-bottom-width:2px;border-radius:6px;padding:1px 6px;background:#fff;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">S</div>
+    <div>
+      <div class="brand">Skunkworks • AZ-040 Revision</div>
+      <div class="sub">One-pager: Managing Microsoft 365 with PowerShell</div>
+    </div>
+    <div class="spacer"></div>
+    <span class="badge">2025-08-22</span>
+  </div>
+
+  <div class="card">
+    <div class="h1">Objective</div>
+    <p>Connect to Microsoft 365 services (Entra ID/Graph, Exchange Online, SharePoint Online, and Teams), perform core admin tasks (users, groups, licenses, mailboxes, SPO sites, and Teams), and validate access.</p>
+    <div class="kv"><span>Connect-MgGraph</span><span>Connect-ExchangeOnline</span><span>Connect-SPOService</span><span>Connect-MicrosoftTeams</span><span>New-MgUser</span><span>Set-MgUserLicense</span><span>New-EXOMailbox</span><span>New-SPOSite</span><span>New-Team</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Quick Reference (copy & paste)</h2>
+<pre class="code"># Sign in to Microsoft Graph (Entra ID)
+Install-Module Microsoft.Graph -Scope CurrentUser -Force
+Connect-MgGraph -Scopes "User.ReadWrite.All","Group.ReadWrite.All","Directory.ReadWrite.All"
+Select-MgProfile beta   # or v1.0 if preferred
+
+# Create admin user (password profile) and assign role (example)
+$pp = @{ Password = "P@ssw0rd!" }
+$domain = (Get-MgDomain | Where-Object IsVerified).Id | Select-Object -First 1
+$new = New-MgUser -DisplayName "Noreen Riggs" -UserPrincipalName ("Noreen@{0}" -f $domain) `
+  -AccountEnabled -MailNickname "Noreen" -PasswordProfile $pp
+# Assign Global Administrator (needs RoleManagement RBAC or PIM in production)
+# Get-MgDirectoryRole | ? DisplayName -eq "Global Administrator" | New-MgDirectoryRoleMember -DirectoryObjectId $new.Id
+
+# Create and license a standard user
+$all = New-MgUser -DisplayName "Allan Yoo" -UserPrincipalName ("Allan@{0}" -f $domain) `
+  -AccountEnabled -MailNickname "Allan" -PasswordProfile $pp
+Update-MgUser -UserId $all.Id -UsageLocation "US"
+(Get-MgSubscribedSku) | Select SkuId, SkuPartNumber  # find ENTERPRISEPREMIUM (E5)
+Set-MgUserLicense -UserId $all.Id -AddLicenses @{SkuId = (Get-MgSubscribedSku | ? SkuPartNumber -eq "ENTERPRISEPREMIUM").SkuId} -RemoveLicenses @()
+
+# Azure AD group (security) and membership
+$grp = New-MgGroup -DisplayName "Sales Security Group" -MailEnabled:$false -MailNickname "SalesSecurityGroup" -SecurityEnabled
+New-MgGroupMember -GroupId $grp.Id -DirectoryObjectId $all.Id
+
+# Exchange Online: room mailbox + auto-accept
+Install-Module ExchangeOnlineManagement -Scope CurrentUser -Force
+Connect-ExchangeOnline
+New-Mailbox -Name "BoardRoom" -Room
+Set-CalendarProcessing -Identity "BoardRoom" -AutomateProcessing AutoAccept
+Get-EXOMailbox -ResultSize 5 | ft DisplayName,PrimarySmtpAddress
+
+# SharePoint Online: connect and create site
+Install-Module Microsoft.Online.SharePoint.PowerShell -Scope CurrentUser -Force
+Connect-SPOService -Url "https://&lt;tenant&gt;-admin.sharepoint.com"
+New-SPOSite -Url "https://&lt;tenant&gt;.sharepoint.com/sites/Sales" -Owner "noreen@&lt;tenant&gt;.onmicrosoft.com" -StorageQuota 256 -Template "EHS#1" -NoWait
+Get-SPOSite -Identity "https://&lt;tenant&gt;.sharepoint.com/sites/Sales"
+
+# Microsoft Teams: connect, create team, and add user
+Install-Module MicrosoftTeams -Scope CurrentUser -Force
+Connect-MicrosoftTeams
+$team = New-Team -DisplayName "Sales Team" -MailNickName "SalesTeam"
+Add-TeamUser -GroupId $team.GroupId -User ("Allan@{0}" -f $domain)
+Get-TeamUser -GroupId $team.GroupId</pre>
+    <p class="sub">Tip: Use <code>Select-MgProfile v1.0</code> for stable production scripts; keep <code>beta</code> for features not yet in v1.0.</p>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>What you did</h2>
+      <ul>
+        <li>Connected to Entra ID (Graph) and created users (admin + standard) with license assignment.</li>
+        <li>Created a security group and added the standard user as a member.</li>
+        <li>Connected to Exchange Online, created a room mailbox, and configured auto-accept.</li>
+        <li>Connected to SharePoint Online, created a site asynchronously, and checked status.</li>
+        <li>Connected to Teams, created a team, and verified membership.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Verification</h2>
+<pre class="code"># Graph connectivity & objects
+(Get-MgContext).Scopes
+Get-MgUser -Filter "accountEnabled eq true" -CountVariable c -ConsistencyLevel eventual | Select-Object -First 5 DisplayName,UserPrincipalName
+Get-MgGroup -Filter "displayName eq 'Sales Security Group'"
+
+# Exchange
+Get-EXOMailbox -RecipientTypeDetails RoomMailbox | Where-Object Name -eq "BoardRoom"
+
+# SharePoint
+Get-SPOSite -Limit 10 | Select-Object Url,Status,Template
+
+# Teams
+Get-Team | Select-Object DisplayName,Visibility
+</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Troubleshooting & Root Cause</h2>
+    <table class="table">
+      <tr><th>Symptom</th><th>Likely Cause → Fix</th></tr>
+      <tr>
+        <td><strong>Graph: 403/insufficient privileges</strong></td>
+        <td>Missing delegated scopes or admin consent → include needed scopes in <code>Connect-MgGraph</code>; for app-only, create an app registration and grant application permissions.</td>
+      </tr>
+      <tr>
+        <td><strong>Exchange: Connect-ExchangeOnline loop / auth errors</strong></td>
+        <td>Old EXO module or TLS issue → install EXO V3 module, ensure TLS 1.2, run <code>Disconnect-ExchangeOnline -Confirm:$false</code> to clear stale sessions.</td>
+      </tr>
+      <tr>
+        <td><strong>SharePoint: admin URL fails</strong></td>
+        <td>Wrong URL → use <code>https://&lt;tenant&gt;-admin.sharepoint.com</code> for <code>Connect-SPOService</code>; ensure the account has SPO Admin rights.</td>
+      </tr>
+      <tr>
+        <td><strong>Teams: New-Team / Add-TeamUser fails</strong></td>
+        <td>Licensing or Teams service disabled → verify user licenses (Teams), wait for provisioning, and re-run. Some tenants require Org-wide settings to allow team creation.</td>
+      </tr>
+      <tr>
+        <td><strong>Licensing: Set-MgUserLicense errors</strong></td>
+        <td>UsageLocation missing or SKU mismatch → set <code>-UsageLocation</code> first and pick a valid <code>SkuId</code> from <code>Get-MgSubscribedSku</code>.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>Ops / Exam Tips</h2>
+      <ul>
+        <li>Graph is the strategic API; use EXO/SPO/Teams modules where needed for service-specific tasks.</li>
+        <li>For repeatability: parameterize tenant/domain, and wrap connection steps in a function with clear prompts.</li>
+        <li>Use <code>-NoWait</code> for long-running SPO site creation and poll with <code>Get-SPOSite</code>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Try This (extra practice)</h2>
+      <ul>
+        <li>Create a dynamic group for users with <code>department eq "Sales"</code> and test membership changes.</li>
+        <li>Grant a shared mailbox FullAccess and SendAs to a user and verify.</li>
+        <li>Create a private team and add an external guest; verify invitation and access.</li>
+      </ul>
+<pre class="code"># Hints
+# Dynamic group rule (example — requires AAD P1/P2)
+# New-MgGroup -GroupTypes "DynamicMembership" -MembershipRule "(user.department -eq "Sales")" -MembershipRuleProcessingState "On"
+# Exchange permissions
+Add-MailboxPermission -Identity "Shared" -User "Allan" -AccessRights FullAccess -AutoMapping:$true
+Add-RecipientPermission -Identity "Shared" -Trustee "Allan" -AccessRights SendAs</pre>
+    </div>
+  </div>
+
+  <hr>
+  <div class="footer">
+    Scope & tasks follow the official lab: Objectives, Exercises 1–4 (Entra ID users/groups & licensing; Exchange room mailbox; SharePoint site creation; Teams team + membership)【88†#objectives】【88†#exercise-1-managing-users-and-groups-in-azure-ad】【88†#exercise-2-managing-exchange-online】【88†#exercise-3-managing-sharepoint-online】【88†#exercise-4-managing-microsoft-teams】.
+    Print-friendly • Light theme • Tip: press <kbd>Ctrl</kbd>+<kbd>P</kbd> for PDF.
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skunkworks • AZ-040 Cheat Sheet — Azure Resource Management with PowerShell</title>
+<style>
+:root{--bg:#fcfcfe;--card:#ffffff;--ink:#0b1220;--muted:#5d6b83;--accent:#2563eb;--chip:#eef2ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg),#f7faff)}
+.container{max-width:1100px;margin:auto;padding:28px}
+.header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.logo{width:36px;height:36px;border-radius:10px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:700}
+.brand{font-weight:700;letter-spacing:.3px}
+.spacer{flex:1}
+.badge{font-weight:600;font-size:12px;color:#1f2937;background:var(--chip);border:1px solid #d1d5ff;padding:6px 10px;border-radius:999px}
+.h1{font-size:28px;margin:10px 0 4px 0}
+.sub{color:var(--muted);margin:0 0 16px 0}
+.card{background:var(--card);border:1px solid #e6eaf5;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 1px 0 rgba(12,23,41,.03)}
+h2{font-size:18px;margin:0 0 8px;color:#0b1220}
+p{color:var(--muted);margin:6px 0 12px;line-height:1.55}
+ul{margin:0 0 0 20px}
+li{margin:6px 0}
+.code{background:#0b122005;border:1px solid #e7e9f2;border-radius:12px;padding:12px;overflow:auto}
+pre,code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.kv{display:flex;gap:8px;flex-wrap:wrap}
+.kv span{background:var(--chip);border:1px solid #d1d5ff;border-radius:999px;padding:6px 10px;font-size:12px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #edf0f7;padding:10px 8px;text-align:left;vertical-align:top}
+.table th{color:#111827}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.footer{font-size:12px;color:#6b7280;margin-top:14px}
+hr{border:0;border-top:1px solid #e6eaf5;margin:18px 0}
+kbd{border:1px solid #c7ccdb;border-bottom-width:2px;border-radius:6px;padding:1px 6px;background:#fff;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">S</div>
+    <div>
+      <div class="brand">Skunkworks • AZ‑040 Revision</div>
+      <div class="sub">One‑pager: Azure Resource Management with PowerShell</div>
+    </div>
+    <div class="spacer"></div>
+    <span class="badge">2025-08-22</span>
+  </div>
+
+  <div class="card">
+    <div class="h1">Objective</div>
+    <p>Authenticate to Azure, set context, and create/manage/delete resources using the <strong>Az</strong> PowerShell modules and Cloud Shell.</p>
+    <div class="kv"><span>Install-Module Az</span><span>Connect-AzAccount</span><span>Set-AzContext</span><span>New-AzResourceGroup</span><span>New-AzVM</span><span>Get/Set/Remove‑Az*</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Quick Reference (copy & paste)</h2>
+<pre class="code"># Sign in & select subscription
+Install-Module Az -Scope CurrentUser -Force
+Connect-AzAccount                 # add -Tenant TENANT_ID if needed
+Get-AzSubscription | ft Name,Id,State
+Set-AzContext -Subscription &lt;SUBSCRIPTION_ID&gt;
+
+# Create RG + VM
+$rg = "YourNameM9"
+New-AzResourceGroup -Name $rg -Location "westeurope"
+$cred = Get-Credential
+$vm = New-AzVM -ResourceGroupName $rg -Name "TestVM1" -Location "westeurope" `
+  -Image "Win2019Datacenter" -PublicIpAddressName "TestPublicIp" -OpenPorts 3389 -Credential $cred
+
+# Add a 1 GB data disk
+$vmObj = Get-AzVM -ResourceGroupName $rg -Name "TestVM1"
+Add-AzVMDataDisk -VM $vmObj -Name "disk1" -LUN 0 -Caching ReadOnly -DiskSizeinGB 1 -CreateOption Empty
+Update-AzVM -ResourceGroupName $rg -VM $vmObj
+
+# Verify / list
+Get-AzResource -ResourceGroupName $rg | ft Type,Name,Location
+Get-AzPublicIpAddress -Name "TestPublicIp" -ResourceGroupName $rg | `
+  Select Name,IpAddress,@{n="FQDN";e={$_.DnsSettings.Fqdn}}
+
+# Clean up
+Remove-AzResourceGroup -Name $rg -Force</pre>
+    <p class="sub">Tip: Keep formatting (<code>Format-*</code>) to the end of pipelines to avoid breaking object processing.</p>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>What you did</h2>
+      <ul>
+        <li>Installed <code>Az</code> modules and authenticated to the correct tenant/subscription.</li>
+        <li>Used Cloud Shell to create a resource group and verified context.</li>
+        <li>Provisioned a Windows Server VM, inspected NIC/IP/FQDN, and connected via RDP.</li>
+        <li>Attached a data disk and validated in the portal/CLI.</li>
+        <li>Deleted all resources with an idempotent RG remove.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Verification</h2>
+<pre class="code">Get-AzContext
+Get-AzResourceGroup
+Get-AzVM -Status | Select Name,PowerState
+Get-AzPublicIpAddress -Name TestPublicIp -ResourceGroupName $rg |
+  Select Name,IpAddress,@{n='FQDN';e={$_.DnsSettings.Fqdn}}</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Troubleshooting & Root Cause</h2>
+    <table class="table">
+      <tr>
+        <th>Symptom</th><th>Likely Cause → Fix</th>
+      </tr>
+      <tr>
+        <td><strong>“No subscriptions found”</strong> after sign-in</td>
+        <td>Wrong tenant or stale context → <code>Connect-AzAccount -Tenant &lt;TenantId&gt;</code> then <code>Get-AzSubscription</code> and <code>Set-AzContext</code>. If using CSP/guest accounts, ensure you’re in the customer tenant.</td>
+      </tr>
+      <tr>
+        <td><strong>Login loops / MFA prompts</strong></td>
+        <td>Cached tokens expired/corrupt → <code>Disconnect-AzAccount</code>, close the window, or use <code>Connect-AzAccount -UseDeviceAuthentication</code> on locked-down hosts.</td>
+      </tr>
+      <tr>
+        <td><strong>New-AzVM fails with SKU/Quota/Region errors</strong></td>
+        <td>Unavailable SKU or quota threshold → check <code>Get-AzVMUsage -Location westeurope</code> and choose an available size/region; request quota increase if needed.</td>
+      </tr>
+      <tr>
+        <td><strong>Public IP/FQDN missing</strong></td>
+        <td>Wrong IP resource name or RG → ensure <code>-PublicIpAddressName "TestPublicIp"</code> was specified and use <code>Get-AzPublicIpAddress -ResourceGroupName $rg</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Cloud Shell errors about storage</strong></td>
+        <td>No storage mount in tenant/sub → reinitialize Cloud Shell to create a storage account & file share, or pick a different region with capacity.</td>
+      </tr>
+      <tr>
+        <td><strong>RDP can’t connect</strong></td>
+        <td>NSG or Public IP misconfigured → open 3389 with <code>-OpenPorts 3389</code> or add an NSG rule; confirm the VM’s PowerState is <em>running</em>.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>Ops / Exam Tips</h2>
+      <ul>
+        <li>Use <code>-WhatIf</code> for destructive ops and <code>Tags</code> for cleanup targeting.</li>
+        <li>Prefer <code>Az</code> (CIM/REST) over legacy AzureRM modules.</li>
+        <li>Keep RG names consistent per lab run (e.g., <code>YourNameM9</code>).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Try This (extra practice)</h2>
+      <ul>
+        <li>Apply tags: <code>Update-AzTag -ResourceGroupName $rg -Tag @{CostCenter='Lab';Owner='You'}</code>.</li>
+        <li>Create a reader role assignment for a teammate using <code>New-AzRoleAssignment</code>.</li>
+        <li>Export deployment as ARM/Bicep with <code>Export-AzResourceGroup</code> and compare.</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr>
+  <div class="footer">
+    AZ‑040T00 lab scope aligned with Microsoft Learning content【44†/html/body/div[2]/main/article/h2[1]】. Commands mirror tasks for Exercises 1–3, including VM create, disk add, and cleanup【44†/html/body/div[2]/main/article/ol[2]/li[3]】【44†/html/body/div[2]/main/article/ol[3]/li[3]】.
+    Print-friendly • Light theme • Tip: press <kbd>Ctrl</kbd>+<kbd>P</kbd> for PDF.
+  </div>
+</div>
+</body>
+</html>

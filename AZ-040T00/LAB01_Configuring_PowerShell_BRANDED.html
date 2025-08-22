@@ -1,0 +1,167 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skunkworks • AZ-040 Cheat Sheet — Configuring Windows PowerShell & Finding Commands</title>
+<style>
+:root{--bg:#fcfcfe;--card:#ffffff;--ink:#0b1220;--muted:#5d6b83;--accent:#2563eb;--chip:#eef2ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg),#f7faff)}
+.container{max-width:1100px;margin:auto;padding:28px}
+.header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.logo{width:36px;height:36px;border-radius:10px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:700}
+.brand{font-weight:700;letter-spacing:.3px}
+.spacer{flex:1}
+.badge{font-weight:600;font-size:12px;color:#1f2937;background:var(--chip);border:1px solid #d1d5ff;padding:6px 10px;border-radius:999px}
+.h1{font-size:28px;margin:10px 0 4px 0}
+.sub{color:var(--muted);margin:0 0 16px 0}
+.card{background:var(--card);border:1px solid #e6eaf5;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 1px 0 rgba(12,23,41,.03)}
+h2{font-size:18px;margin:0 0 8px;color:#0b1220}
+p{color:var(--muted);margin:6px 0 12px;line-height:1.55}
+ul{margin:0 0 0 20px}
+li{margin:6px 0}
+.code{background:#0b122005;border:1px solid #e7e9f2;border-radius:12px;padding:12px;overflow:auto}
+pre,code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.kv{display:flex;gap:8px;flex-wrap:wrap}
+.kv span{background:var(--chip);border:1px solid #d1d5ff;border-radius:999px;padding:6px 10px;font-size:12px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #edf0f7;padding:10px 8px;text-align:left;vertical-align:top}
+.table th{color:#111827}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.footer{font-size:12px;color:#6b7280;margin-top:14px}
+hr{border:0;border-top:1px solid #e6eaf5;margin:18px 0}
+kbd{border:1px solid #c7ccdb;border-bottom-width:2px;border-radius:6px;padding:1px 6px;background:#fff;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">S</div>
+    <div>
+      <div class="brand">Skunkworks • AZ-040 Revision</div>
+      <div class="sub">One-pager: Configuring Windows PowerShell & Finding/Running Commands</div>
+    </div>
+    <div class="spacer"></div>
+    <span class="badge">2025-08-22</span>
+  </div>
+
+  <div class="card">
+    <div class="h1">Objective</div>
+    <p>Open and configure PowerShell console & ISE, discover commands efficiently, and use Help/About topics to learn core concepts.</p>
+    <div class="kv"><span>Get-Help</span><span>Update-Help</span><span>Get-Command</span><span>Get-Member</span><span>Start-Transcript</span><span>Get/Set-Alias</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Quick Reference (copy & paste)</h2>
+<pre class="code"># Help system
+Update-Help -Force                       # run elevated or with -SourcePath for offline
+Get-Help Get-Process -Examples           # or -Online, -Full
+
+# Find commands fast
+Get-Command -Verb Get -Noun *Service*    # discover by verb/noun wildcards
+Get-Command -Module *Net*                # search within module names
+Get-Command -Name *Firewall* -CommandType Cmdlet,Function
+
+# Inspect objects
+Get-Service | Get-Member                 # inspect properties & methods
+Get-Service | Where-Object Status -eq 'Running' | Select Name,Status
+
+# Aliases (prefer full names in scripts)
+Get-Alias | Sort-Object Definition | Select Name,Definition
+Set-Alias ll Get-ChildItem
+
+# Transcript
+Start-Transcript C:\DayOne.txt
+Stop-Transcript</pre>
+    <p class="sub">Tip: Keep <code>Format-*</code> at the end of pipelines; format early and you lose rich objects for further processing.</p>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>What you did</h2>
+      <ul>
+        <li>Launched the 64-bit PowerShell console as Administrator and adjusted appearance (font, colors, layout).</li>
+        <li>Customized ISE view (single-pane, hide Command pane) and font size.</li>
+        <li>Used <code>Get-Help</code>/<code>Get-Command</code> to discover commands and ran basic admin tasks.</li>
+        <li>Started a shell transcript to capture commands and output.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Verification</h2>
+<pre class="code"># Confirm host & version
+$PSVersionTable.PSVersion
+
+# Help works and returns examples
+Get-Help Get-Process -Examples
+
+# Command discovery returns items
+Get-Command *service* | Select -First 5 Name,ModuleName
+
+# Transcript exists (Windows)
+Test-Path C:\DayOne.txt</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Troubleshooting & Root Cause</h2>
+    <table class="table">
+      <tr><th>Symptom</th><th>Likely Cause → Fix</th></tr>
+      <tr>
+        <td><strong>Update-Help fails / cannot download</strong></td>
+        <td>Proxy/TLS or permissions → run elevated, ensure TLS 1.2; set proxy for WinHTTP; or use offline store: <code>Save-Help</code> on a connected PC and <code>Update-Help -SourcePath</code> here.</td>
+      </tr>
+      <tr>
+        <td><strong>Help content missing for modules</strong></td>
+        <td>Module not installed or not imported → <code>Get-Module -ListAvailable</code>, <code>Import-Module</code>, then retry <code>Update-Help</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Transcript path errors</strong></td>
+        <td>Path invalid/locked → choose a writable path (e.g., <code>$env:TEMP\DayOne.txt</code>) or run as admin for system paths.</td>
+      </tr>
+      <tr>
+        <td><strong>Command not found</strong></td>
+        <td>Wrong module or edition → check with <code>Get-Command</code>, then <code>Install-Module</code> or use Windows PowerShell if cmdlet isn’t in PS7.</td>
+      </tr>
+      <tr>
+        <td><strong>Console shows (x86)</strong></td>
+        <td>32‑bit host launched → start 64‑bit PowerShell (no <em>(x86)</em> in title) to access full provider paths.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>Ops / Exam Tips</h2>
+      <ul>
+        <li>Prefer full cmdlet names in scripts; aliases are fine interactively.</li>
+        <li>Use splatting for readability: <code>$p=@{Name='bits';Verbose=$true}</code>; <code>Get-Service @p</code>.</li>
+        <li>Learn common verbs: <code>Get-Verb</code> (e.g., Get/Set/New/Remove/Test).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Try This (extra practice)</h2>
+      <ul>
+        <li>Find the command to resolve a DNS name, then run it for a host you choose.</li>
+        <li>List enabled Windows Firewall rules and filter to only enabled ones.</li>
+        <li>Open the newest 10 Security log entries with <code>Get-WinEvent</code>.</li>
+        <li>Search About topics: <code>Get-Help about_*</code> → read about comparison operators and environment variables.</li>
+      </ul>
+<pre class="code"># Hints
+Get-Command *dns*              # discover DNS-related commands
+Get-Command *firewall*         # firewall commands
+Get-Help about_Comparison_Operators
+Get-Help about_Environment_Variables</pre>
+    </div>
+  </div>
+
+  <hr>
+  <div class="footer">
+    Aligned with Microsoft Learning lab objectives and tasks: Objectives【61†#objectives】, Finding/Running Commands【61†#exercise-3-finding-and-running-windows-powershell-commands】, Using About files【61†#exercise-4-using-about-files】.
+    Print-friendly • Light theme • Tip: press <kbd>Ctrl</kbd>+<kbd>P</kbd> for PDF.
+  </div>
+</div>
+</body>
+</html>

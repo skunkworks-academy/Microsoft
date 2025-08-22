@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skunkworks • AZ-040 Cheat Sheet — Querying information by using WMI and CIM</title>
+<style>
+:root{--bg:#fcfcfe;--card:#ffffff;--ink:#0b1220;--muted:#5d6b83;--accent:#2563eb;--chip:#eef2ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg),#f7faff)}
+.container{max-width:1100px;margin:auto;padding:28px}
+.header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.logo{width:36px;height:36px;border-radius:10px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:700}
+.brand{font-weight:700;letter-spacing:.3px}
+.spacer{flex:1}
+.badge{font-weight:600;font-size:12px;color:#1f2937;background:var(--chip);border:1px solid #d1d5ff;padding:6px 10px;border-radius:999px}
+.h1{font-size:28px;margin:10px 0 4px 0}
+.sub{color:var(--muted);margin:0 0 16px 0}
+.card{background:var(--card);border:1px solid #e6eaf5;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 1px 0 rgba(12,23,41,.03)}
+h2{font-size:18px;margin:0 0 8px;color:#0b1220}
+p{color:var(--muted);margin:6px 0 12px;line-height:1.55}
+ul{margin:0 0 0 20px}
+li{margin:6px 0}
+.code{background:#0b122005;border:1px solid #e7e9f2;border-radius:12px;padding:12px;overflow:auto}
+pre,code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.kv{display:flex;gap:8px;flex-wrap:wrap}
+.kv span{background:var(--chip);border:1px solid #d1d5ff;border-radius:999px;padding:6px 10px;font-size:12px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #edf0f7;padding:10px 8px;text-align:left;vertical-align:top}
+.table th{color:#111827}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.footer{font-size:12px;color:#6b7280;margin-top:14px}
+hr{border:0;border-top:1px solid #e6eaf5;margin:18px 0}
+kbd{border:1px solid #c7ccdb;border-bottom-width:2px;border-radius:6px;padding:1px 6px;background:#fff;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">S</div>
+    <div>
+      <div class="brand">Skunkworks • AZ-040 Revision</div>
+      <div class="sub">One-pager: Querying information by using WMI and CIM</div>
+    </div>
+    <div class="spacer"></div>
+    <span class="badge">2025-08-22</span>
+  </div>
+
+  <div class="card">
+    <div class="h1">Objective</div>
+    <p>Discover repository classes and query management data using <strong>WMI</strong> and <strong>CIM</strong>. Create CIM sessions for remote systems and invoke class instance methods.</p>
+    <div class="kv"><span>Get-CimInstance</span><span>Get-CimClass</span><span>New-CimSession</span><span>Invoke-CimMethod</span><span>Test-WSMan</span><span>Get-WmiObject (legacy)</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Quick Reference (copy & paste)</h2>
+<pre class="code"># Discover classes (server-side filtering)
+Get-CimClass -ClassName Win32_*Service* | Select -First 5 CimClassName, CimNamespace
+
+# OS info (local)
+Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber,ServicePackMajorVersion
+
+# Hardware info
+Get-CimInstance Win32_ComputerSystem | Select-Object Manufacturer,Model,TotalPhysicalMemory
+
+# IP addresses (static)
+Get-WmiObject Win32_NetworkAdapterConfiguration -Filter "IPEnabled=True" | `
+  Select-Object Description,@{n='IP';e={ $_.IPAddress -join ', ' }}
+
+# Remote via CIM session
+$targets = "LON-DC1","LON-CL1"
+$s = New-CimSession -ComputerName $targets
+Invoke-Command -ComputerName $targets -ScriptBlock { hostname }   # optional WinRM check
+Get-CimInstance -CimSession $s Win32_LogicalDisk -Filter "DriveType=3" | `
+  Select-Object PSComputerName,DeviceID,Size,FreeSpace
+
+# Invoke method: reboot remote OS (use carefully)
+$os = Get-CimInstance -CimSession $s Win32_OperatingSystem
+Invoke-CimMethod -InputObject $os -MethodName Reboot
+
+# Change WinRM start mode via WMI method
+$svc = Get-WmiObject -Class Win32_Service -Filter "Name='WinRM'"
+$svc.ChangeStartMode("Automatic") | Out-Null</pre>
+    <p class="sub">Tip: Prefer <code>Get-CimInstance</code> (WS-Man) over legacy <code>Get-WmiObject</code> (DCOM). Filter at the source for performance.</p>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>What you did</h2>
+      <ul>
+        <li>Explored classes with <code>Get-CimClass</code> and queried local OS, hardware, service, and network data.</li>
+        <li>Created <code>New-CimSession</code> to query remote machines consistently.</li>
+        <li>Invoked instance methods via <code>Invoke-CimMethod</code> (e.g., OS reboot) and WMI service method changes.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Verification</h2>
+<pre class="code"># Sessions working?
+Get-CimSession | Select-Object ComputerName,Protocol
+
+# OS/build checks
+Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber
+
+# Remote disk inventory
+Get-CimInstance -CimSession $s Win32_LogicalDisk -Filter "DriveType=3" |
+  Measure-Object -Property Size,FreeSpace -Sum
+
+# WinRM service start type updated?
+Get-Service WinRM | Select-Object Name,StartType,Status</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Troubleshooting & Root Cause</h2>
+    <table class="table">
+      <tr><th>Symptom</th><th>Likely Cause → Fix</th></tr>
+      <tr>
+        <td><strong>RPC server unavailable (0x800706BA) using WMI</strong></td>
+        <td>DCOM blocked or firewall closed → switch to CIM/WS-Man (<code>Get-CimInstance</code>) or open RPC ports; ensure WinRM enabled.</td>
+      </tr>
+      <tr>
+        <td><strong>Class not found</strong></td>
+        <td>Wrong class/namespace → list with <code>Get-CimClass -ClassName Win32*</code>; default namespace is <code>root/cimv2</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Access denied remotely</strong></td>
+        <td>Missing rights or auth mismatch → run as domain admin or delegated account; ensure WinRM listeners and SPNs are correct; test with <code>Test-WSMan</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>CIM session creation failure</strong></td>
+        <td>WinRM disabled/firewall → run <code>Enable-PSRemoting -Force</code> on targets; open TCP 5985 (HTTP) or 5986 (HTTPS), check DNS.</td>
+      </tr>
+      <tr>
+        <td><strong>Invoke-CimMethod returns error code</strong></td>
+        <td>Method-specific prerequisites → inspect returned <code>ReturnValue</code>; e.g., OS reboot needs privileges and pending operations.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>Security & Best Practices</h2>
+      <ul>
+        <li>Prefer CIM/WS-Man for firewall-friendly, standards-based remoting.</li>
+        <li>Use HTTPS listeners for workgroup/cross-forest access; validate certificates.</li>
+        <li>Throttle fan-out and avoid pulling huge property sets; select only needed fields.</li>
+        <li>Keep formatting (<code>Format-*</code>) to the end of pipelines to preserve objects.</li>
+        <li>Record privileged operations with <code>Start-Transcript</code>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Try This (extra practice)</h2>
+      <ul>
+        <li>Enumerate <code>Win32_QuickFixEngineering</code> (hotfixes) across a server list and export to CSV.</li>
+        <li>Query BIOS (<code>Win32_BIOS</code>) and compare across models for standardization.</li>
+        <li>Use <code>Invoke-CimMethod</code> to start/stop a service via <code>Win32_Service</code> methods and verify.</li>
+      </ul>
+<pre class="code"># Hints
+Get-CimInstance Win32_QuickFixEngineering -CimSession $s |
+  Select-Object PSComputerName,HotFixID,InstalledOn | Export-Csv .\hotfixes.csv -NoTypeInformation
+
+Get-CimInstance Win32_BIOS | Select-Object SMBIOSBIOSVersion,Manufacturer,ReleaseDate</pre>
+    </div>
+  </div>
+
+  <hr>
+  <div class="footer">
+    Aligned with lab objectives: WMI queries, CIM queries, and invoking methods (Exercises 1–3). Print-friendly • Light theme • Press <kbd>Ctrl</kbd>+<kbd>P</kbd> for PDF.
+  </div>
+</div>
+</body>
+</html>

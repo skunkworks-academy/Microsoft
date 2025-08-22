@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skunkworks • AZ-040 Cheat Sheet — Using the PowerShell Pipeline</title>
+<style>
+:root{--bg:#fcfcfe;--card:#ffffff;--ink:#0b1220;--muted:#5d6b83;--accent:#2563eb;--chip:#eef2ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg),#f7faff)}
+.container{max-width:1100px;margin:auto;padding:28px}
+.header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.logo{width:36px;height:36px;border-radius:10px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:700}
+.brand{font-weight:700;letter-spacing:.3px}
+.spacer{flex:1}
+.badge{font-weight:600;font-size:12px;color:#1f2937;background:var(--chip);border:1px solid #d1d5ff;padding:6px 10px;border-radius:999px}
+.h1{font-size:28px;margin:10px 0 4px 0}
+.sub{color:var(--muted);margin:0 0 16px 0}
+.card{background:var(--card);border:1px solid #e6eaf5;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 1px 0 rgba(12,23,41,.03)}
+h2{font-size:18px;margin:0 0 8px;color:#0b1220}
+p{color:var(--muted);margin:6px 0 12px;line-height:1.55}
+ul{margin:0 0 0 20px}
+li{margin:6px 0}
+.code{background:#0b122005;border:1px solid #e7e9f2;border-radius:12px;padding:12px;overflow:auto}
+pre,code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.kv{display:flex;gap:8px;flex-wrap:wrap}
+.kv span{background:var(--chip);border:1px solid #d1d5ff;border-radius:999px;padding:6px 10px;font-size:12px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #edf0f7;padding:10px 8px;text-align:left;vertical-align:top}
+.table th{color:#111827}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.footer{font-size:12px;color:#6b7280;margin-top:14px}
+hr{border:0;border-top:1px solid #e6eaf5;margin:18px 0}
+kbd{border:1px solid #c7ccdb;border-bottom-width:2px;border-radius:6px;padding:1px 6px;background:#fff;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">S</div>
+    <div>
+      <div class="brand">Skunkworks • AZ-040 Revision</div>
+      <div class="sub">One-pager: Using the PowerShell Pipeline</div>
+    </div>
+    <div class="spacer"></div>
+    <span class="badge">2025-08-22</span>
+  </div>
+
+  <div class="card">
+    <div class="h1">Objective</div>
+    <p>Enumerate, filter, transform, and format objects safely and efficiently. Apply enumeration when needed, and convert output to CSV/HTML/XML for reporting.</p>
+    <div class="kv"><span>Where-Object</span><span>Select-Object</span><span>Sort-Object</span><span>Group-Object</span><span>Measure-Object</span><span>ForEach-Object</span><span>Select-String</span><span>ConvertTo-*</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Quick Reference (copy & paste)</h2>
+<pre class="code">
+# 1) Enumerate file system items (recursive) and filter to files
+Get-ChildItem E:\\ -Recurse -File
+
+# 2) Top 10 processes by CPU with projection
+Get-Process | Where-Object CPU -gt 0 | Sort-Object CPU -Descending |
+  Select-Object -First 10 Name,Id,CPU
+
+# 3) Calculated properties and expansion
+Get-Service | Select-Object Name,@{n='DependsOn';e={ ($_.ServicesDependedOn | Select-Object -ExpandProperty Name) -join ',' }}
+
+# 4) Grouping + counts (by extension)
+Get-ChildItem E:\\ -Recurse -File | Group-Object Extension |
+  Sort-Object Count -Descending | Select-Object -First 10 Name,Count
+
+# 5) Pipeline enumeration: 1..100 to seeds for random
+1..100 | ForEach-Object { Get-Random -SetSeed $_ }
+
+# 6) AD query (requires RSAT ActiveDirectory module)
+Get-ADUser -Filter "Department -eq 'IT' -and City -eq 'London'" -Properties Department,City,Office |
+  Sort-Object Name | Select-Object Name,Department,City,Office
+
+# 7) Convert to HTML with title preface
+Get-ADUser -Filter "Department -eq 'IT'" -Properties * |
+  Select-Object Name,Department,City |
+  ConvertTo-Html -PreContent '<h2>Users</h2>' | Out-File E:\\UserReport.html
+
+# 8) Export to CSV/XML
+Get-ADUser -Filter * -Properties * | Select-Object Name,Mail,Title |
+  Export-Csv E:\\Users.csv -NoTypeInformation
+Get-ADUser -Filter * -Properties Name,Title | Export-Clixml E:\\Users.xml
+</pre>
+    <p class="sub">Tip: <strong>Filter left, format right</strong> — use server-side filters first (e.g., <code>-Filter</code> parameters), and keep <code>Format-*</code> as the last step.</p>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>What you did</h2>
+      <ul>
+        <li>Enumerated objects from providers (FileSystem, AD) and applied filters/sorts.</li>
+        <li>Projected properties (including calculated properties and <code>-ExpandProperty</code>).</li>
+        <li>Aggregated results with grouping and measuring.</li>
+        <li>Converted results to HTML/CSV/XML for reporting.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Verification</h2>
+<pre class="code">
+# Confirm pipeline returns data
+Get-ChildItem E:\\ -Recurse -File | Select-Object -First 5
+
+# Check computed column exists
+Get-Service | Select-Object -First 3 Name,@{n='DependsOn';e={ ($_.ServicesDependedOn | Select -Expand Name) -join ',' }}
+
+# Ensure report files exist
+Test-Path E:\\UserReport.html; Test-Path E:\\Users.csv; Test-Path E:\\Users.xml
+</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Troubleshooting & Root Cause</h2>
+    <table class="table">
+      <tr><th>Symptom</th><th>Likely Cause → Fix</th></tr>
+      <tr>
+        <td><strong>Pipeline returns no rows</strong></td>
+        <td>Wrong property names/types → inspect with <code>Get-Member</code>; validate provider supports the parameter (e.g., <code>-File</code> needs PS 3+).</td>
+      </tr>
+      <tr>
+        <td><strong>Downstream commands break after <code>Format-Table</code></strong></td>
+        <td>Formatting cmdlets output formatting objects → keep <code>Format-*</code> to the very end or avoid before data ops.</td>
+      </tr>
+      <tr>
+        <td><strong>“The term Get-ADUser is not recognized”</strong></td>
+        <td>AD module not installed/imported → Install RSAT ActiveDirectory; then <code>Import-Module ActiveDirectory</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Performance is poor on huge trees</strong></td>
+        <td>Filtering too late → use native <code>-Filter</code> or provider switches; avoid loading everything then filtering in memory.</td>
+      </tr>
+      <tr>
+        <td><strong>Calculated property shows blank</strong></td>
+        <td>Null members → use null-coalescing logic, e.g., <code>@{n='DependsOn';e={ ($_.ServicesDependedOn | % Name) -join ',' }}</code>.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>Best Practices</h2>
+      <ul>
+        <li>Prefer <code>-Filter</code> parameters to reduce data over the wire.</li>
+        <li>Use <code>-ExpandProperty</code> to unwrap nested values instead of parsing strings.</li>
+        <li>Order operations: Filter → Sort/Group/Measure → Select → Format.</li>
+        <li>Keep commands idempotent for re-runs; avoid <code>Random</code> in verification steps.</li>
+        <li>For large exports, stream directly to file with <code>Export-Csv</code> to avoid memory spikes.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Try This (extra practice)</h2>
+      <ul>
+        <li>Find the 10 largest files under <code>E:\</code> and export with sizes in MB.</li>
+        <li>Search logs for error strings with <code>Select-String</code> and produce a frequency table.</li>
+        <li>Generate an HTML report with a custom <code>-PreContent</code> header and open it in a browser.</li>
+      </ul>
+<pre class="code">
+# Hints
+Get-ChildItem E:\\ -Recurse -File |
+  Select-Object FullName,@{n='MB';e={ [math]::Round($_.Length/1MB,2) }} |
+  Sort-Object MB -Desc | Select -First 10 | Export-Csv E:\\Top10.csv -NoTypeInformation
+
+Get-Content E:\\logs\\*.log | Select-String -Pattern 'error','fail' -SimpleMatch |
+  Group-Object Value | Sort-Object Count -Desc | Select Name,Count
+</pre>
+    </div>
+  </div>
+
+  <hr>
+  <div class="footer">
+    Aligned with lab objectives and tasks: enumerating objects, converting objects, and producing HTML/CSV/XML reports. Print-friendly • Light theme • Press <kbd>Ctrl</kbd>+<kbd>P</kbd> for PDF.
+  </div>
+</div>
+</body>
+</html>

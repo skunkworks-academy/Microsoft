@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell Lab One-Pager: Variables, Arrays & Hash Tables</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; background-color: #f9f9f9; color: #333; padding: 20px; }
+        header { text-align: center; padding: 10px; background-color: #004578; color: white; border-radius: 8px; }
+        h1, h2 { color: #004578; }
+        section { background: white; padding: 15px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        code { background: #eee; padding: 2px 4px; border-radius: 4px; font-family: Consolas, monospace; }
+        .footer { text-align: center; font-size: 0.9em; margin-top: 20px; color: #777; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AZ-040 Lab: Using Variables, Arrays & Hash Tables</h1>
+        <p>One-Pager Study & Troubleshooting Guide</p>
+    </header>
+
+    <section>
+        <h2>Key Objectives</h2>
+        <ul>
+            <li>Understand variable declaration and scope.</li>
+            <li>Create and manipulate arrays and hash tables.</li>
+            <li>Use common operators and methods for data management.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Quick Reference Commands</h2>
+        <ul>
+            <li><code>$var = "Value"</code> — Define a variable.</li>
+            <li><code>$array = 1,2,3,4</code> — Create a simple array.</li>
+            <li><code>$array[0]</code> — Access array element.</li>
+            <li><code>$hashtable = @{ Key="Value"; Name="John" }</code> — Create a hash table.</li>
+            <li><code>$hashtable["Key"]</code> — Retrieve value from hash table.</li>
+            <li><code>$array += 5</code> — Add item to array.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Troubleshooting & Root Cause Analysis</h2>
+        <ul>
+            <li><strong>Variable not recognized:</strong> Ensure variable is declared in the correct scope (local vs global).</li>
+            <li><strong>Array indexing error:</strong> Verify index is within bounds of array length.</li>
+            <li><strong>Hashtable key issues:</strong> Check spelling and case sensitivity for keys.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Best Practices</h2>
+        <ul>
+            <li>Use descriptive names for variables to improve readability.</li>
+            <li>Initialize arrays and hash tables explicitly for predictable results.</li>
+            <li>Leverage <code>Get-Variable</code> and <code>Remove-Variable</code> for management.</li>
+            <li>Validate inputs before adding to arrays or hash tables to prevent runtime errors.</li>
+        </ul>
+    </section>
+
+    <div class="footer">
+        Generated on 2025-08-22 14:32:17 for AZ-040 Revision — Skunkworks Academy
+    </div>
+</body>
+</html>

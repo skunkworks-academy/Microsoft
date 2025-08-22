@@ -1,0 +1,178 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skunkworks • AZ-040 Cheat Sheet — Using PSProviders & PSDrives</title>
+<style>
+:root{--bg:#fcfcfe;--card:#ffffff;--ink:#0b1220;--muted:#5d6b83;--accent:#2563eb;--chip:#eef2ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg),#f7faff)}
+.container{max-width:1100px;margin:auto;padding:28px}
+.header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.logo{width:36px;height:36px;border-radius:10px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:700}
+.brand{font-weight:700;letter-spacing:.3px}
+.spacer{flex:1}
+.badge{font-weight:600;font-size:12px;color:#1f2937;background:var(--chip);border:1px solid #d1d5ff;padding:6px 10px;border-radius:999px}
+.h1{font-size:28px;margin:10px 0 4px 0}
+.sub{color:var(--muted);margin:0 0 16px 0}
+.card{background:var(--card);border:1px solid #e6eaf5;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 1px 0 rgba(12,23,41,.03)}
+h2{font-size:18px;margin:0 0 8px;color:#0b1220}
+p{color:var(--muted);margin:6px 0 12px;line-height:1.55}
+ul{margin:0 0 0 20px}
+li{margin:6px 0}
+.code{background:#0b122005;border:1px solid #e7e9f2;border-radius:12px;padding:12px;overflow:auto}
+pre,code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.kv{display:flex;gap:8px;flex-wrap:wrap}
+.kv span{background:var(--chip);border:1px solid #d1d5ff;border-radius:999px;padding:6px 10px;font-size:12px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #edf0f7;padding:10px 8px;text-align:left;vertical-align:top}
+.table th{color:#111827}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.footer{font-size:12px;color:#6b7280;margin-top:14px}
+hr{border:0;border-top:1px solid #e6eaf5;margin:18px 0}
+kbd{border:1px solid #c7ccdb;border-bottom-width:2px;border-radius:6px;padding:1px 6px;background:#fff;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">S</div>
+    <div>
+      <div class="brand">Skunkworks • AZ-040 Revision</div>
+      <div class="sub">One-pager: Using PSProviders & PSDrives</div>
+    </div>
+    <div class="spacer"></div>
+    <span class="badge">2025-08-22</span>
+  </div>
+
+  <div class="card">
+    <div class="h1">Objective</div>
+    <p>Treat data stores as navigable drives and perform consistent CRUD across FileSystem, Registry, Environment, Certificates, and Active Directory.</p>
+    <div class="kv"><span>Get-PSProvider</span><span>Get-PSDrive</span><span>New-PSDrive</span><span>New/Set/Get/Remove-Item</span><span>Get/Set-ItemProperty</span><span>Resolve/Test-Path</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Quick Reference (copy & paste)</h2>
+<pre class="code"># List providers and drives
+Get-PSProvider | Select Name,Drives
+Get-PSDrive | Select Name,Provider,Root,Used,Free
+
+# FILESYSTEM — create folder on remote admin share and map a PSDrive
+New-Item -Path \\LON-SVR1\C$\ -Name ScriptShare -ItemType Directory
+New-PSDrive -Name ScriptShare -PSProvider FileSystem -Root \\LON-SVR1\C$\ScriptShare
+Set-Location ScriptShare:
+New-Item -Name script.txt -ItemType File
+Get-ChildItem
+
+# REGISTRY — create key/value under HKCU
+$reg = 'HKCU:\Software\Scripts'
+If (-not (Test-Path $reg)) { New-Item -Path $reg -Force | Out-Null }
+New-ItemProperty -Path $reg -Name PSDriveName -Value 'ScriptShare' -PropertyType String -Force
+Get-ItemProperty -Path $reg
+
+# ENVIRONMENT — read and set variables
+Get-ChildItem Env:
+$env:LabRoot = 'C:\Labs'; [Environment]::GetEnvironmentVariable('LabRoot','Machine')
+
+# CERTIFICATES — navigate stores
+Get-ChildItem Cert:\LocalMachine\My | Select Subject,Thumbprint,NotAfter
+
+# ACTIVE DIRECTORY — PSDrive to Users container (requires RSAT ActiveDirectory)
+Import-Module ActiveDirectory
+New-PSDrive -Name AdatumUsers -PSProvider ActiveDirectory -Root 'CN=Users,DC=Adatum,DC=com'
+Set-Location AdatumUsers:
+New-Item -Path 'CN=London Developers' -ItemType Group
+Get-ChildItem | Where-Object Name -like '*London*'</pre>
+    <p class="sub">Tip: Use <code>-LiteralPath</code> for special characters (e.g., <code>[</code>, <code>]</code>); keep <code>Format-*</code> until the end of pipelines.</p>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>What you did</h2>
+      <ul>
+        <li>Explored available providers and drives and created a FileSystem PSDrive to a remote share.</li>
+        <li>Created a registry key/value to store a configuration such as default PSDrive name.</li>
+        <li>Navigated ENV and CERT providers for configuration and certificate inspection.</li>
+        <li>Mapped an AD PSDrive to the Users container and created a group object.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Verification</h2>
+<pre class="code"># PSDrive present?
+Get-PSDrive ScriptShare
+
+# File exists?
+Test-Path ScriptShare:\script.txt
+
+# Registry value in place?
+(Get-ItemProperty 'HKCU:\Software\Scripts').PSDriveName
+
+# AD provider reachable?
+Get-PSDrive AdatumUsers; Get-ChildItem AdatumUsers:\ | Select -First 3 Name</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Troubleshooting & Root Cause</h2>
+    <table class="table">
+      <tr><th>Symptom</th><th>Likely Cause → Fix</th></tr>
+      <tr>
+        <td><strong>New-PSDrive -Persist fails</strong></td>
+        <td><code>-Persist</code> only works in Windows PowerShell with Explorer context (not PS7/Core or remoting). Use Windows PowerShell or omit <code>-Persist</code> and create a session-scoped drive.</td>
+      </tr>
+      <tr>
+        <td><strong>Access denied to \\LON-SVR1\C$</strong></td>
+        <td>Admin share requires admin rights/Kerberos → run elevated and use domain creds; avoid admin shares in production, prefer dedicated shares.</td>
+      </tr>
+      <tr>
+        <td><strong>AD provider not found</strong></td>
+        <td>RSAT ActiveDirectory module missing or no domain connectivity → install RSAT/feature and try again; verify you’re running Windows PowerShell 5.1 for full provider support.</td>
+      </tr>
+      <tr>
+        <td><strong>Registry path mismatch (WOW6432Node)</strong></td>
+        <td>32‑bit vs 64‑bit provider redirection → target the correct hive explicitly and use <code>-LiteralPath</code> to avoid accidental expansion.</td>
+      </tr>
+      <tr>
+        <td><strong>PSDrive disappears after restart</strong></td>
+        <td>Session-scoped mapping → use <code>-Persist</code> (Windows PowerShell) or recreate at profile startup (<code>$PROFILE</code>).</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>Best Practices</h2>
+      <ul>
+        <li>Prefer dedicated SMB shares over admin shares (<code>C$</code>) and apply least-privilege ACLs.</li>
+        <li>Use <code>Resolve-Path</code> and <code>Test-Path</code> before destructive operations.</li>
+        <li>Parameterize PSDrive names/roots for portability; persist via user profile if needed.</li>
+        <li>When scripting registry, always set <code>-PropertyType</code> and use <code>-Force</code> for idempotency.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Try This (extra practice)</h2>
+      <ul>
+        <li>Mount a PSDrive to <code>HKLM:\Software\Skunkworks</code> and store course settings there.</li>
+        <li>Create a network drive mapping with credentials: <code>New-PSDrive -Name X -PSProvider FileSystem -Root \\LON-SVR1\Scripts -Credential (Get-Credential)</code>.</li>
+        <li>Export the list of AD users from the provider view to CSV.</li>
+      </ul>
+<pre class="code"># Hints
+$hklm = 'HKLM:\Software\Skunkworks'
+If (-not (Test-Path $hklm)) { New-Item -Path $hklm -Force | Out-Null }
+New-ItemProperty -Path $hklm -Name 'Course' -Value 'AZ-040' -PropertyType String -Force
+
+Get-ChildItem AdatumUsers:\ | Where-Object ObjectClass -eq 'user' |
+  Select-Object Name,distinguishedName | Export-Csv .\AdatumUsers.csv -NoTypeInformation</pre>
+    </div>
+  </div>
+
+  <hr>
+  <div class="footer">
+    Aligned with lab objectives & tasks: file system PSDrive, registry key/value creation, and AD PSDrive + group creation. Print-friendly • Light theme • Press <kbd>Ctrl</kbd>+<kbd>P</kbd> for PDF.
+  </div>
+</div>
+</body>
+</html>

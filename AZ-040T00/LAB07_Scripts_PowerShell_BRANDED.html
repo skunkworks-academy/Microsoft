@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab – Using Scripts with PowerShell | AZ-040</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; background-color: #f9f9f9; color: #222; margin: 0; padding: 0; }
+        header { background-color: #004578; color: white; padding: 20px; text-align: center; }
+        section { padding: 20px; margin: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        h2 { color: #004578; margin-top: 0; }
+        code, pre { background: #f4f4f4; padding: 6px; border-radius: 4px; font-size: 0.95em; }
+        ul { margin-left: 20px; }
+        footer { text-align: center; font-size: 0.8em; color: #666; margin: 20px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lab – Using Scripts with PowerShell</h1>
+        <p>AZ-040: Automating Administration with PowerShell</p>
+    </header>
+
+    <section>
+        <h2>📘 Key Objectives</h2>
+        <ul>
+            <li>Create and execute PowerShell scripts (.ps1 files)</li>
+            <li>Parameterize scripts for flexible execution</li>
+            <li>Debug and handle common script execution errors</li>
+            <li>Use script blocks and external script references</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>⚡ Quick-Reference Commands</h2>
+        <pre>
+# Create a script file
+New-Item -Path "C:\Scripts\myscript.ps1" -ItemType File
+
+# Run a script
+.\myscript.ps1
+
+# Pass parameters to a script
+.\myscript.ps1 -Name "Admin" -Verbose
+
+# Unblock a downloaded script
+Unblock-File -Path "C:\Scripts\myscript.ps1"
+
+# Check execution policy
+Get-ExecutionPolicy
+
+# Change execution policy (temporary session)
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+        </pre>
+    </section>
+
+    <section>
+        <h2>🛠 Troubleshooting Tips</h2>
+        <ul>
+            <li><strong>Policy Blocked:</strong> Use <code>Get-ExecutionPolicy</code> and <code>Set-ExecutionPolicy</code> to adjust settings temporarily.</li>
+            <li><strong>Path Issues:</strong> Ensure you are in the script directory or provide the full path.</li>
+            <li><strong>Permission Denied:</strong> Run PowerShell as administrator if system-level changes are needed.</li>
+            <li><strong>Syntax Errors:</strong> Use <code>ISE</code> or <code>VS Code</code> for script editing to highlight syntax issues.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>💡 Best Practices</h2>
+        <ul>
+            <li>Always sign scripts in production environments for security.</li>
+            <li>Use parameters and validation to make scripts reusable and safe.</li>
+            <li>Comment code for readability and maintenance.</li>
+            <li>Keep a version control system (like Git) for script revisions.</li>
+        </ul>
+    </section>
+
+    <footer>
+        Skunkworks Academy | PowerShell AZ-040 Training Resources
+    </footer>
+</body>
+</html>

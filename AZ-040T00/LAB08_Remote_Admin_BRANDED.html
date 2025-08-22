@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skunkworks • AZ-040 Cheat Sheet — Performing Remote Administration with PowerShell</title>
+<style>
+:root{--bg:#fcfcfe;--card:#ffffff;--ink:#0b1220;--muted:#5d6b83;--accent:#2563eb;--chip:#eef2ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg),#f7faff)}
+.container{max-width:1100px;margin:auto;padding:28px}
+.header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.logo{width:36px;height:36px;border-radius:10px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:700}
+.brand{font-weight:700;letter-spacing:.3px}
+.spacer{flex:1}
+.badge{font-weight:600;font-size:12px;color:#1f2937;background:var(--chip);border:1px solid #d1d5ff;padding:6px 10px;border-radius:999px}
+.h1{font-size:28px;margin:10px 0 4px 0}
+.sub{color:var(--muted);margin:0 0 16px 0}
+.card{background:var(--card);border:1px solid #e6eaf5;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 1px 0 rgba(12,23,41,.03)}
+h2{font-size:18px;margin:0 0 8px;color:#0b1220}
+p{color:var(--muted);margin:6px 0 12px;line-height:1.55}
+ul{margin:0 0 0 20px}
+li{margin:6px 0}
+.code{background:#0b122005;border:1px solid #e7e9f2;border-radius:12px;padding:12px;overflow:auto}
+pre,code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.kv{display:flex;gap:8px;flex-wrap:wrap}
+.kv span{background:var(--chip);border:1px solid #d1d5ff;border-radius:999px;padding:6px 10px;font-size:12px}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #edf0f7;padding:10px 8px;text-align:left;vertical-align:top}
+.table th{color:#111827}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.footer{font-size:12px;color:#6b7280;margin-top:14px}
+hr{border:0;border-top:1px solid #e6eaf5;margin:18px 0}
+kbd{border:1px solid #c7ccdb;border-bottom-width:2px;border-radius:6px;padding:1px 6px;background:#fff;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">S</div>
+    <div>
+      <div class="brand">Skunkworks • AZ-040 Revision</div>
+      <div class="sub">One-pager: Performing Remote Administration with PowerShell</div>
+    </div>
+    <div class="spacer"></div>
+    <span class="badge">2025-08-22</span>
+  </div>
+
+  <div class="card">
+    <div class="h1">Objective</div>
+    <p>Configure and use PowerShell Remoting (WinRM) for 1:1, 1:Many, and implicit remoting. Secure sessions (Kerberos/NTLM/HTTPS), handle double-hop, and validate results.</p>
+    <div class="kv"><span>Enable-PSRemoting</span><span>Enter-PSSession</span><span>Invoke-Command</span><span>New-PSSession</span><span>Import-PSSession</span><span>Test-WSMan</span><span>Set-Item WSMan:</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Quick Reference (copy & paste)</h2>
+<pre class="code"># Enable remoting (run as admin on targets)
+Enable-PSRemoting -Force
+
+# One-to-one interactive
+Enter-PSSession -ComputerName LON-DC1
+# ... run commands ...
+Exit-PSSession
+
+# One-to-many (fan-out) with script block
+$servers = "LON-DC1","LON-SVR1"
+Invoke-Command -ComputerName $servers -ScriptBlock { Get-NetAdapter | Select Name,Status,LinkSpeed }
+
+# Reusable persistent sessions
+$sessions = New-PSSession -ComputerName $servers
+Invoke-Command -Session $sessions -ScriptBlock { Get-Process | Sort CPU -desc | Select -First 5 Name,CPU }
+Remove-PSSession $sessions
+
+# Implicit remoting (import a remote module locally)
+$s = New-PSSession -ComputerName LON-DC1
+Import-PSSession -Session $s -Module ActiveDirectory -Prefix R
+Get-RADUser -Filter * | Select -First 5 Name
+Remove-PSSession $s
+
+# HTTPS listener creation (on target)
+# Assumes a cert with CN=hostname is present in LocalMachine\My
+winrm create winrm/config/Listener?Address=*+Transport=HTTPS '@{Hostname="LON-DC1"; CertificateThumbprint="THUMB"}'
+Set-Item WSMan:\localhost\Service\Auth\Certificate $true
+
+# CredSSP (double-hop) — enable carefully, domain only
+Enable-WSManCredSSP -Role Client -DelegateComputer "*.contoso.com"
+Enable-WSManCredSSP -Role Server
+Invoke-Command -ComputerName LON-DC1 -Authentication CredSSP -Credential (Get-Credential) -ScriptBlock { hostname }</pre>
+    <p class="sub">Tip: Prefer Kerberos within the domain. Use HTTPS or CredSSP only when needed and document why.</p>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>What you did</h2>
+      <ul>
+        <li>Enabled remoting on target servers and verified listeners.</li>
+        <li>Opened interactive sessions, then fanned out commands to multiple nodes.</li>
+        <li>Imported remote modules with implicit remoting for local discoverability.</li>
+        <li>Secured remoting with HTTPS and tested CredSSP for double-hop scenarios.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Verification</h2>
+<pre class="code"># Listener & service
+Test-WSMan LON-DC1
+Get-Service WinRM
+
+# Current listeners (on target)
+winrm enumerate winrm/config/Listener
+
+# Confirm commands executed remotely
+Invoke-Command -ComputerName LON-DC1 -ScriptBlock { "$env:COMPUTERNAME / $env:USERDOMAIN" }
+
+# Implicit remoting proxies exist
+Get-Command -Name Get-RADUser</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Troubleshooting & Root Cause</h2>
+    <table class="table">
+      <tr><th>Symptom</th><th>Likely Cause → Fix</th></tr>
+      <tr>
+        <td><strong>Cannot connect (WinRM client: HTTP/HTTPS errors)</strong></td>
+        <td>Service/listener/firewall misconfig → run <code>winrm quickconfig</code>; open TCP 5985 (HTTP) or 5986 (HTTPS); verify SPNs/DNS; check proxy settings.</td>
+      </tr>
+      <tr>
+        <td><strong>“Access is denied”</strong></td>
+        <td>Insufficient rights or auth method mismatch → use domain creds; confirm LocalAccountTokenFilterPolicy for local accounts; try <code>-Credential</code> and verify group membership.</td>
+      </tr>
+      <tr>
+        <td><strong>Double-hop (cannot access network resource from remote)</strong></td>
+        <td>Kerberos delegation not configured → use CredSSP temporarily, or configure Kerberos constrained delegation / resource-based delegation; avoid storing creds in scripts.</td>
+      </tr>
+      <tr>
+        <td><strong>Imported commands missing</strong></td>
+        <td>Module not on target or session disposed → ensure module installed remotely and session is alive; re-run <code>Import-PSSession</code> with <code>-AllowClobber</code> if needed.</td>
+      </tr>
+      <tr>
+        <td><strong>Certificate/HTTPS binding fails</strong></td>
+        <td>CN/SAN mismatch or wrong store → install a cert with correct name in LocalMachine\My; use thumbprint; validate with <code>Get-ChildItem Cert:\LocalMachine\My</code>.</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <h2>Security & Best Practices</h2>
+      <ul>
+        <li>Use JEA (Just Enough Administration) endpoints for least-privilege tasks.</li>
+        <li>Restrict remoting to management subnets; monitor with Windows Firewall logs.</li>
+        <li>Audit transcript logs for privileged sessions (<code>Start-Transcript</code>).</li>
+        <li>Prefer Kerberos; use HTTPS for workgroup or cross-forest scenarios.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Try This (extra practice)</h2>
+      <ul>
+        <li>Create a constrained JEA endpoint that only exposes <code>Get-Service</code> and <code>Restart-Service</code>.</li>
+        <li>Test fan-out to 50 hosts with <code>Invoke-Command</code> and capture timings with <code>Measure-Command</code>.</li>
+        <li>Export a remote module via implicit remoting and inspect generated proxy functions.</li>
+      </ul>
+<pre class="code"># JEA (conceptual snippet)
+# New-PSSessionConfigurationFile -VisibleCmdlets @("Get-Service","Restart-Service") -Path .\JEA.pssc
+# Register-PSSessionConfiguration -Name JEA-Services -Path .\JEA.pssc -Force
+# Enter-PSSession -ComputerName LON-DC1 -ConfigurationName JEA-Services</pre>
+    </div>
+  </div>
+
+  <hr>
+  <div class="footer">
+    Scope: remoting enablement, interactive & fan-out sessions, implicit remoting, HTTPS/CredSSP, verification and troubleshooting. Print-friendly • Light theme • Press <kbd>Ctrl</kbd>+<kbd>P</kbd> for PDF.
+  </div>
+</div>
+</body>
+</html>
