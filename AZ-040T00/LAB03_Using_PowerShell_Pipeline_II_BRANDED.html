@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell Pipeline II - Study One-Pager</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f9f9f9; color: #333; line-height: 1.6; margin: 20px; }
+        header { text-align: center; padding: 20px; border-bottom: 3px solid #0078D7; }
+        h1 { color: #0078D7; }
+        section { background: #fff; padding: 20px; margin: 20px auto; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #333; border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-bottom: 10px; }
+        ul { padding-left: 20px; }
+        code { background: #eef; padding: 2px 5px; border-radius: 4px; }
+        footer { text-align: center; font-size: 0.9em; color: #666; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>PowerShell Pipeline II</h1>
+    <p>AZ-040: Automating Administration with PowerShell</p>
+</header>
+
+<section>
+    <h2>Key Topics Learned</h2>
+    <ul>
+        <li>Chaining cmdlets using <code>|</code> to streamline administration tasks.</li>
+        <li>Filtering and sorting objects directly in the pipeline.</li>
+        <li>Using <code>ForEach-Object</code> and <code>Where-Object</code> efficiently.</li>
+        <li>Understanding object types passed through the pipeline.</li>
+        <li>Error handling and conditional processing with the pipeline.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Quick Reference Commands</h2>
+    <ul>
+        <li><code>Get-Process | Sort-Object CPU -Descending | Select-Object -First 5</code></li>
+        <li><code>Get-Service | Where-Object {$_.Status -eq "Running"}</code></li>
+        <li><code>Get-Content .\log.txt | ForEach-Object { $_.ToUpper() }</code></li>
+        <li><code>Get-ADUser -Filter * | Select-Object Name, Enabled</code></li>
+    </ul>
+</section>
+
+<section>
+    <h2>Troubleshooting Tips</h2>
+    <ul>
+        <li>Use <code>Get-Member</code> to inspect object properties in the pipeline.</li>
+        <li>Check for null or unexpected data with <code>Where-Object { $_ }</code>.</li>
+        <li>Use <code>-ErrorAction Stop</code> to capture errors in scripts.</li>
+        <li>Pipe to <code>Out-GridView</code> for visual data inspection.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Best Practices</h2>
+    <ul>
+        <li>Always test pipeline commands with <code>-WhatIf</code> where available.</li>
+        <li>Combine filtering and sorting early in the pipeline for better performance.</li>
+        <li>Document reusable pipeline snippets in scripts for consistency.</li>
+        <li>Use <code>Try...Catch</code> blocks for robust error handling.</li>
+    </ul>
+</section>
+
+<footer>
+    <p>© 2025 Skunkworks Academy — AZ-040 PowerShell Training Resource</p>
+</footer>
+</body>
+</html>

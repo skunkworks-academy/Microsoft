@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab – Performing Local System Administration with PowerShell</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #fafafa; color: #222; line-height: 1.6; margin: 20px; }
+    header { text-align: center; padding: 10px; border-bottom: 3px solid #005EB8; }
+    header h1 { margin: 0; color: #005EB8; }
+    section { margin: 20px auto; padding: 20px; max-width: 900px; background: #fff; border-radius: 8px;
+              box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    h2 { color: #005EB8; border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    ul { margin: 10px 0; }
+    footer { text-align: center; font-size: 0.9em; margin-top: 30px; color: #555; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Skunkworks Training – Lab One-Pager</h1>
+    <h2>Performing Local System Administration with PowerShell</h2>
+  </header>
+
+  <section>
+    <h2>📘 Key Topics</h2>
+    <ul>
+      <li>Managing local users and groups</li>
+      <li>Administering services</li>
+      <li>Managing processes</li>
+      <li>Working with event logs</li>
+      <li>Automating system administration tasks</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>⚡ Quick Reference Commands</h2>
+    <pre>
+# Local users and groups
+Get-LocalUser
+New-LocalUser -Name "TestUser" -Password (Read-Host -AsSecureString)
+Add-LocalGroupMember -Group "Administrators" -Member "TestUser"
+
+# Services
+Get-Service
+Start-Service -Name "Spooler"
+Stop-Service -Name "Spooler"
+Set-Service -Name "Spooler" -StartupType Automatic
+
+# Processes
+Get-Process
+Stop-Process -Name notepad -Force
+
+# Event Logs
+Get-EventLog -LogName System -Newest 20
+Clear-EventLog -LogName Application
+    </pre>
+  </section>
+
+  <section>
+    <h2>🛠️ Troubleshooting & RCA</h2>
+    <ul>
+      <li><b>Permission denied:</b> Run PowerShell as Administrator for system-level commands.</li>
+      <li><b>User not found:</b> Verify the spelling and existence of the account with <code>Get-LocalUser</code>.</li>
+      <li><b>Service control issues:</b> Check dependencies with <code>Get-Service -DependentServices</code>.</li>
+      <li><b>Locked processes:</b> Use <code>Stop-Process -Id &lt;PID&gt; -Force</code> if the name fails.</li>
+      <li><b>Event log clearance blocked:</b> Ensure audit/retention policies allow log clearance.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>✅ Verification Steps</h2>
+    <ul>
+      <li>Run <code>Get-LocalUser</code> to confirm user creation or changes.</li>
+      <li>Use <code>Get-Service -Name Spooler</code> to confirm service status updates.</li>
+      <li>Run <code>Get-Process</code> to validate process management actions.</li>
+      <li>Query logs with <code>Get-EventLog</code> to confirm log entries were updated/cleared.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>🚀 Extra Practice</h2>
+    <ul>
+      <li>Create a script that adds a user, sets their group, and configures a service for startup.</li>
+      <li>Schedule a task to monitor and restart a critical service automatically.</li>
+      <li>Export the last 50 Application log entries to a CSV for analysis.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Skunkworks Training – Automating Administration with PowerShell (AZ-040)  
+    One-Pager Revision Sheet
+  </footer>
+</body>
+</html>
