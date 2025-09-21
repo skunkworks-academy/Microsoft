@@ -1,5 +1,13 @@
-﻿# AZ-400 web app artifacts
-AZ-400/web/node_modules/
+﻿# root
+.DS_Store
+Thumbs.db
+
+# Next.js
 AZ-400/web/.next/
 AZ-400/web/out/
-AZ-400/web/.env*
+AZ-400/web/node_modules/
+
+# logs
+**/npm-debug.log*
+**/yarn-debug.log*
+**/pnpm-debug.log*
