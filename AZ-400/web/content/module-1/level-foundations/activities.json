@@ -1,0 +1,8 @@
+﻿{
+  "activities": [
+    { "id": "m1-foundations-fc-1", "type": "flashcard",
+      "prompt": "Term: Continuous Integration",
+      "config": { "answer": "Merging code frequently with automated tests" },
+      "scoring": { "maxXp": 10, "minToPass": 7 } }
+  ]
+}

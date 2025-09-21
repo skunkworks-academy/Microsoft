@@ -1,0 +1,5 @@
+﻿{
+  "prompt": "Which step belongs to CI?",
+  "choices": ["Manual release approval","Merge with automated unit tests","Blue/green switch"],
+  "correctIndex": 1
+}

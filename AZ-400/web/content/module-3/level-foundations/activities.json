@@ -1,0 +1,11 @@
+﻿{
+  "activities": [
+    {
+      "id": "fc-1",
+      "type": "flashcard",
+      "prompt": "Term: Continuous Integration (CI)",
+      "config": { "answer": "Frequent merges with automated tests to detect issues early" },
+      "scoring": { "maxXp": 10, "minToPass": 7 }
+    }
+  ]
+}
