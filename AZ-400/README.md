@@ -1,4 +1,3 @@
-````markdown
 # Skunkworks AZ-400 DevOps Accelerator
 
 <!-- Banner (SVG below in /AZ-400/assets) -->
