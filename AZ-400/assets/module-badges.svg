@@ -1,14 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="120" viewBox="0 0 900 120" role="img" aria-label="Module badges">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 140" role="img" aria-labelledby="title desc">
+  <title id="title">Skunkworks Academy — AZ-400 Modules</title>
+  <desc id="desc">Three pill-shaped badges linking to Module 1 CI/CD Foundations, Module 2 Environments and Release, Module 3 Observability and Governance.</desc>
+
+  <style>
+    :root { color-scheme: light dark; }
+    text { font: 600 16px "Segoe UI", Roboto, Arial, sans-serif; fill: #ffffff; }
+    .card { rx: 16; ry: 16; }
+    .shadow { filter: url(#shadow); }
+    /* High-contrast border for dark-mode backgrounds */
+    .stroke { stroke: rgba(255,255,255,0.15); stroke-width: 1; }
+    @media (prefers-color-scheme: dark) {
+      .stroke { stroke: rgba(255,255,255,0.25); }
+    }
+    a:hover text { text-decoration: underline; }
+  </style>
+
   <defs>
-    <linearGradient id="b1" x1="0" x2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient>
-    <linearGradient id="b2" x1="0" x2="1"><stop offset="0%" stop-color="#111827"/><stop offset="100%" stop-color="#4b5563"/></linearGradient>
+    <linearGradient id="g-blue" x1="0" x2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="g-slate" x1="0" x2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#4b5563"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-40%" width="140%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="rgba(0,0,0,0.35)"/>
+    </filter>
   </defs>
-  <g font-family="Segoe UI, Roboto, Arial" font-size="16" fill="#fff">
-    <rect x="20"  y="20" rx="12" ry="12" width="260" height="80" fill="url(#b1)"/>
-    <text x="150" y="70" text-anchor="middle">Module 1 · CI/CD Foundations</text>
-    <rect x="320" y="20" rx="12" ry="12" width="260" height="80" fill="url(#b2)"/>
-    <text x="450" y="70" text-anchor="middle">Module 2 · Environments & Release</text>
-    <rect x="620" y="20" rx="12" ry="12" width="260" height="80" fill="url(#b1)"/>
-    <text x="750" y="70" text-anchor="middle">Module 3 · Observability & Governance</text>
-  </g>
+
+  <!-- Layout constants -->
+  <!-- left x positions: 30, 320, 610 (cards 260 wide, 30 gutter) -->
+  <!-- y: center at 80; rect top at 40 with height 80 -->
+
+  <!-- Module 1 -->
+  <a xlink:href="./AZ-400/" target="_top">
+    <g class="shadow">
+      <rect class="card stroke" x="30" y="40" width="260" height="80" fill="url(#g-blue)"/>
+      <text x="160" y="80" text-anchor="middle" dominant-baseline="middle">Module 1 · CI/CD Foundations</text>
+    </g>
+  </a>
+
+  <!-- Module 2 -->
+  <a xlink:href="./AZ-400/" target="_top">
+    <g class="shadow">
+      <rect class="card stroke" x="320" y="40" width="260" height="80" fill="url(#g-slate)"/>
+      <text x="450" y="80" text-anchor="middle" dominant-baseline="middle">Module 2 · Environments &amp; Release</text>
+    </g>
+  </a>
+
+  <!-- Module 3 -->
+  <a xlink:href="./AZ-400/" target="_top">
+    <g class="shadow">
+      <rect class="card stroke" x="610" y="40" width="260" height="80" fill="url(#g-blue)"/>
+      <text x="740" y="80" text-anchor="middle" dominant-baseline="middle">Module 3 · Observability &amp; Governance</text>
+    </g>
+  </a>
 </svg>
