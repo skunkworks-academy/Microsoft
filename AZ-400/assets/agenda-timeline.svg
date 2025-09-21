@@ -1,14 +1,15 @@
 ﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" role="img" aria-labelledby="title desc">
   <title id="title">Skunkworks Academy — AZ-400 Course Timeline</title>
-  <desc id="desc">A horizontal timeline with four milestones: Kickoff, Module 1, Module 2, and Module 3 & Capstone. Each milestone links to its page.</desc>
+  <desc id="desc">A horizontal timeline with four milestones: Kickoff, Module 1, Module 2, and Module 3 &amp; Capstone. Each milestone links to its page.</desc>
+
   <style>
     :root { color-scheme: light dark; }
-    .rail    { stroke: url(#railGrad); stroke-width: 6; stroke-linecap: round; }
-    .rail-bg { stroke: rgba(0,0,0,0.08); stroke-width: 10; stroke-linecap: round; }
+    .rail-bg { stroke: rgba(0,0,0,0.10); stroke-width: 10; stroke-linecap: round; }
+    .rail    { stroke: url(#railGrad); stroke-width: 6;  stroke-linecap: round; }
     .tick    { fill: #0ea5e9; transition: transform .15s ease; }
+    .tick.hot{ fill: #0ea5e9; }
     .label   { font: 600 14px "Segoe UI", Roboto, Arial, sans-serif; fill: #111827; }
     .sublab  { font: 12px "Segoe UI", Roboto, Arial, sans-serif; fill: #4b5563; }
-    .hot     { fill: #0ea5e9; }
     .node:focus .tick, .node:hover .tick { transform: scale(1.15); }
     .node:focus .label, .node:hover .label { text-decoration: underline; }
     @media (prefers-color-scheme: dark) {
@@ -17,19 +18,24 @@
       .rail-bg { stroke: rgba(255,255,255,0.12); }
     }
   </style>
+
   <defs>
     <linearGradient id="railGrad" x1="0" x2="1">
-      <stop offset="0%"  stop-color="#0ea5e9"/>
+      <stop offset="0%" stop-color="#0ea5e9"/>
       <stop offset="100%" stop-color="#38bdf8"/>
     </linearGradient>
     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
       <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#0ea5e9" flood-opacity="0.45"/>
     </filter>
   </defs>
+
+  <!-- Track -->
   <g transform="translate(0,0)">
     <line class="rail-bg" x1="60" y1="100" x2="840" y2="100"/>
     <line class="rail"    x1="60" y1="100" x2="840" y2="100"/>
   </g>
+
+  <!-- Kickoff -->
   <a class="node" xlink:href="./course" target="_top" tabindex="0" aria-label="Kickoff — course overview">
     <g transform="translate(120,100)" text-anchor="middle">
       <circle class="tick" r="11" filter="url(#glow)"/>
@@ -37,6 +43,8 @@
       <text class="sublab" x="0" y="34">Course overview</text>
     </g>
   </a>
+
+  <!-- Module 1 -->
   <a class="node" xlink:href="./course/module-1/level-foundations" target="_top" tabindex="0" aria-label="Module 1 — CI/CD Foundations">
     <g transform="translate(330,100)" text-anchor="middle">
       <circle class="tick" r="11" filter="url(#glow)"/>
@@ -44,14 +52,18 @@
       <text class="sublab" x="0" y="34">CI/CD Foundations</text>
     </g>
   </a>
-  <a class="node" xlink:href="./course/module-2/level-foundations" target="_top" tabindex="0" aria-label="Module 2 — Environments & Release">
+
+  <!-- Module 2 -->
+  <a class="node" xlink:href="./course/module-2/level-foundations" target="_top" tabindex="0" aria-label="Module 2 — Environments &amp; Release">
     <g transform="translate(540,100)" text-anchor="middle">
       <circle class="tick" r="11" filter="url(#glow)"/>
       <text class="label"  x="0" y="-34">Module 2</text>
       <text class="sublab" x="0" y="34">Environments &amp; Release</text>
     </g>
   </a>
-  <a class="node" xlink:href="./course/module-3/level-capstone" target="_top" tabindex="0" aria-label="Module 3 & Capstone — Observability & Governance">
+
+  <!-- Module 3 & Capstone -->
+  <a class="node" xlink:href="./course/module-3/level-capstone" target="_top" tabindex="0" aria-label="Module 3 &amp; Capstone — Observability &amp; Governance">
     <g transform="translate(750,100)" text-anchor="middle">
       <circle class="tick hot" r="11" filter="url(#glow)"/>
       <text class="label"  x="0" y="-34">Module 3 &amp; Capstone</text>

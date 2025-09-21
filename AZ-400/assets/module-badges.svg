@@ -1,14 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="120" viewBox="0 0 900 120" role="img" aria-label="Module badges">
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 160" role="img" aria-labelledby="title desc">
+  <title id="title">Skunkworks Academy — AZ-400 Module Badges</title>
+  <desc id="desc">Three rounded badges: Module 1 CI/CD Foundations, Module 2 Environments &amp; Release, Module 3 Observability &amp; Governance.</desc>
+
+  <style>
+    :root { color-scheme: light dark; }
+    .badge { rx:16; ry:16; filter:url(#shadow); }
+    .label { font: 600 16px "Segoe UI", Roboto, Arial, sans-serif; fill:#ffffff; }
+    .subl  { font: 12px "Segoe UI", Roboto, Arial, sans-serif; fill: rgba(255,255,255,0.9); }
+    .meta  { font: 11px "Segoe UI", Roboto, Arial, sans-serif; fill: rgba(255,255,255,0.8); }
+    a:focus .badge, a:hover .badge { transform: translateY(-2px); }
+    a { outline: none; }
+    .wrap { transform-box: fill-box; transform-origin: center; transition: transform .15s ease; }
+    @media (prefers-color-scheme: dark) {
+      .meta { fill: rgba(255,255,255,0.8); }
+    }
+  </style>
+
   <defs>
-    <linearGradient id="b1" x1="0" x2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient>
-    <linearGradient id="b2" x1="0" x2="1"><stop offset="0%" stop-color="#111827"/><stop offset="100%" stop-color="#4b5563"/></linearGradient>
+    <linearGradient id="g-blue" x1="0" x2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="g-slate" x1="0" x2="1">
+      <stop offset="0%" stop-color="#111827"/><stop offset="100%" stop-color="#4b5563"/>
+    </linearGradient>
+    <linearGradient id="g-cyan" x1="0" x2="1">
+      <stop offset="0%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
   </defs>
-  <g font-family="Segoe UI, Roboto, Arial" font-size="16" fill="#fff">
-    <rect x="20"  y="20" rx="12" ry="12" width="260" height="80" fill="url(#b1)"/>
-    <text x="150" y="70" text-anchor="middle">Module 1 · CI/CD Foundations</text>
-    <rect x="320" y="20" rx="12" ry="12" width="260" height="80" fill="url(#b2)"/>
-    <text x="450" y="70" text-anchor="middle">Module 2 · Environments &amp; Release</text>
-    <rect x="620" y="20" rx="12" ry="12" width="260" height="80" fill="url(#b1)"/>
-    <text x="750" y="70" text-anchor="middle">Module 3 · Observability & Governance</text>
-  </g>
+
+  <!-- Badge 1 -->
+  <a xlink:href="./course/module-1/level-foundations" target="_top" aria-label="Module 1 — CI/CD Foundations">
+    <g class="wrap" transform="translate(40,30)">
+      <rect class="badge" width="280" height="100" fill="url(#g-blue)"/>
+      <g transform="translate(18,26)">
+        <circle cx="18" cy="18" r="18" fill="rgba(255,255,255,0.18)"/>
+        <path d="M10 18h16M18 10v16" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+      </g>
+      <text class="label" x="80" y="55">Module 1 · CI/CD Foundations</text>
+      <text class="meta"  x="80" y="78">Pipelines · Git hooks · Tests</text>
+    </g>
+  </a>
+
+  <!-- Badge 2 -->
+  <a xlink:href="./course/module-2/level-foundations" target="_top" aria-label="Module 2 — Environments &amp; Release">
+    <g class="wrap" transform="translate(340,30)">
+      <rect class="badge" width="280" height="100" fill="url(#g-slate)"/>
+      <g transform="translate(18,26)">
+        <rect x="4" y="8" width="28" height="20" rx="3" fill="rgba(255,255,255,0.18)"/>
+        <path d="M8 28h20M10 18h16" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+      </g>
+      <text class="label" x="80" y="55">Module 2 · Environments &amp; Release</text>
+      <text class="meta"  x="80" y="78">Branching · Releases · Approvals</text>
+    </g>
+  </a>
+
+  <!-- Badge 3 -->
+  <a xlink:href="./course/module-3/level-foundations" target="_top" aria-label="Module 3 — Observability &amp; Governance">
+    <g class="wrap" transform="translate(640,30)">
+      <rect class="badge" width="280" height="100" fill="url(#g-cyan)"/>
+      <g transform="translate(18,26)">
+        <circle cx="18" cy="18" r="18" fill="rgba(255,255,255,0.18)"/>
+        <path d="M18 8v8l7 7" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.9"/>
+      </g>
+      <text class="label" x="80" y="55">Module 3 · Observability &amp; Governance</text>
+      <text class="meta"  x="80" y="78">Dashboards · SLOs · Security</text>
+    </g>
+  </a>
 </svg>
