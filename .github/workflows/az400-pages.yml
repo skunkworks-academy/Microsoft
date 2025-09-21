@@ -1,0 +1,27 @@
+﻿name: Deploy AZ-400 Site
+on:
+  push:
+    branches: [ main ]
+    paths: [ "AZ-400/**", ".github/workflows/az400-pages.yml" ]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_TARGET: gh-pages
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - name: Install
+        run: npm ci
+        working-directory: AZ-400/web
+      - name: Build
+        run: npm run build
+        working-directory: AZ-400/web
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: AZ-400/web/out }
+      - uses: actions/deploy-pages@v4
