@@ -1,0 +1,5 @@
+﻿# AZ-400 web app artifacts
+AZ-400/web/node_modules/
+AZ-400/web/.next/
+AZ-400/web/out/
+AZ-400/web/.env*
