@@ -1,53 +1,81 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 140" role="img" aria-labelledby="title desc">
-  <title id="title">Skunkworks Academy — AZ-400 Modules</title>
-  <desc id="desc">Three pill-shaped badges linking to Module 1 CI/CD Foundations, Module 2 Environments and Release, Module 3 Observability and Governance.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" role="img" aria-labelledby="title desc">
+  <title id="title">Skunkworks Academy — AZ-400 Course Timeline</title>
+  <desc id="desc">A horizontal timeline with four milestones: Kickoff, Module 1, Module 2, and Module 3 & Capstone. Each milestone links to its page.</desc>
+
   <style>
     :root { color-scheme: light dark; }
-    text { font: 600 16px "Segoe UI", Roboto, Arial, sans-serif; fill: #ffffff; }
-    .card { rx: 16; ry: 16; }
-    .shadow { filter: url(#shadow); }
-    /* High-contrast border for dark-mode backgrounds */
-    .stroke { stroke: rgba(255,255,255,0.15); stroke-width: 1; }
+    .rail    { stroke: url(#railGrad); stroke-width: 6; stroke-linecap: round; }
+    .rail-bg { stroke: rgba(0,0,0,0.08); stroke-width: 10; stroke-linecap: round; }
+    .tick    { fill: #0ea5e9; transition: transform .15s ease; }
+    .label   { font: 600 14px "Segoe UI", Roboto, Arial, sans-serif; fill: #111827; }
+    .sublab  { font: 12px "Segoe UI", Roboto, Arial, sans-serif; fill: #4b5563; }
+    .hot     { fill: #0ea5e9; }
+    .node:focus .tick,
+    .node:hover .tick { transform: scale(1.15); }
+    .node:focus .label,
+    .node:hover .label { text-decoration: underline; }
     @media (prefers-color-scheme: dark) {
-      .stroke { stroke: rgba(255,255,255,0.25); }
+      .label { fill: #e5e7eb; }
+      .sublab { fill: #9ca3af; }
+      .rail-bg { stroke: rgba(255,255,255,0.12); }
     }
-    a:hover text { text-decoration: underline; }
   </style>
+
   <defs>
-    <linearGradient id="g-blue" x1="0" x2="1">
-      <stop offset="0%" stop-color="#0ea5e9"/>
+    <linearGradient id="railGrad" x1="0" x2="1">
+      <stop offset="0%"  stop-color="#0ea5e9"/>
       <stop offset="100%" stop-color="#38bdf8"/>
     </linearGradient>
-    <linearGradient id="g-slate" x1="0" x2="1">
-      <stop offset="0%" stop-color="#111827"/>
-      <stop offset="100%" stop-color="#4b5563"/>
-    </linearGradient>
-    <filter id="shadow" x="-20%" y="-40%" width="140%" height="200%">
-      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="rgba(0,0,0,0.35)"/>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#0ea5e9" flood-opacity="0.45"/>
     </filter>
   </defs>
-  <!-- Layout constants -->
-  <!-- left x positions: 30, 320, 610 (cards 260 wide, 30 gutter) -->
-  <!-- y: center at 80; rect top at 40 with height 80 -->
+
+  <!-- Timeline rail -->
+
+  <g transform="translate(0,0)">
+    <line class="rail-bg" x1="60" y1="100" x2="840" y2="100"/>
+    <line class="rail"    x1="60" y1="100" x2="840" y2="100"/>
+  </g>
+
+  <!-- Kickoff -->
+
+  <a class="node" xlink:href="./course" target="_top" tabindex="0" aria-label="Kickoff — course overview">
+    <g transform="translate(120,100)" text-anchor="middle">
+      <circle class="tick" r="11" filter="url(#glow)"/>
+      <text class="label"  x="0" y="-34">Kickoff</text>
+      <text class="sublab" x="0" y="34">Course overview</text>
+    </g>
+  </a>
+
   <!-- Module 1 -->
-  <a xlink:href="./AZ-400/" target="_top">
-    <g class="shadow">
-      <rect class="card stroke" x="30" y="40" width="260" height="80" fill="url(#g-blue)"/>
-      <text x="160" y="80" text-anchor="middle" dominant-baseline="middle">Module 1 · CI/CD Foundations</text>
+
+  <a class="node" xlink:href="./course/module-1/level-foundations" target="_top" tabindex="0" aria-label="Module 1 — CI/CD Foundations">
+    <g transform="translate(330,100)" text-anchor="middle">
+      <circle class="tick" r="11" filter="url(#glow)"/>
+      <text class="label"  x="0" y="-34">Module 1</text>
+      <text class="sublab" x="0" y="34">CI/CD Foundations</text>
     </g>
   </a>
+
   <!-- Module 2 -->
-  <a xlink:href="./AZ-400/" target="_top">
-    <g class="shadow">
-      <rect class="card stroke" x="320" y="40" width="260" height="80" fill="url(#g-slate)"/>
-      <text x="450" y="80" text-anchor="middle" dominant-baseline="middle">Module 2 · Environments &amp; Release</text>
+
+  <a class="node" xlink:href="./course/module-2/level-foundations" target="_top" tabindex="0" aria-label="Module 2 — Environments & Release">
+    <g transform="translate(540,100)" text-anchor="middle">
+      <circle class="tick" r="11" filter="url(#glow)"/>
+      <text class="label"  x="0" y="-34">Module 2</text>
+      <text class="sublab" x="0" y="34">Environments &amp; Release</text>
     </g>
   </a>
-  <!-- Module 3 -->
-  <a xlink:href="./AZ-400/" target="_top">
-    <g class="shadow">
-      <rect class="card stroke" x="610" y="40" width="260" height="80" fill="url(#g-blue)"/>
-      <text x="740" y="80" text-anchor="middle" dominant-baseline="middle">Module 3 · Observability &amp; Governance</text>
+
+  <!-- Module 3 & Capstone -->
+
+  <a class="node" xlink:href="./course/module-3/level-capstone" target="_top" tabindex="0" aria-label="Module 3 & Capstone — Observability & Governance">
+    <g transform="translate(750,100)" text-anchor="middle">
+      <circle class="tick hot" r="11" filter="url(#glow)"/>
+      <text class="label"  x="0" y="-34">Module 3 &amp; Capstone</text>
+      <text class="sublab" x="0" y="34">Observability &amp; Governance</text>
     </g>
   </a>
 </svg>
+::contentReference[oaicite:0]{index=0}
