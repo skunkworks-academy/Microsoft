@@ -1,0 +1,7 @@
+﻿@import "@carbon/styles/css/styles.css";
+
+/* Skunkworks brand tweaks (safe custom properties) */
+:root {
+  --cds-interactive-01: #0ea5e9; /* primary */
+  --cds-link-01: #0ea5e9;        /* link */
+}

@@ -1,0 +1,9 @@
+﻿{
+  "prompt": "Which is most aligned with CI?",
+  "choices": [
+    "Manual release approvals",
+    "Automated tests on every merge",
+    "Blue/green traffic shift"
+  ],
+  "correctIndex": 1
+}

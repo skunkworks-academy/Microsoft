@@ -1,0 +1,452 @@
+﻿[
+    {
+        "title":  " module 1.Value.ToUpper() odule  module 1.Value.ToUpper() ",
+        "path":  "/module-1/index",
+        "children":  [
+                         {
+                             "title":  " level analysis.Value.ToUpper() evel  level analysis.Value.ToUpper() nalysis",
+                             "path":  "/module-1/level-analysis/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Pipeline Failures",
+                                                  "path":  "/module-1/level-analysis/lesson-1",
+                                                  "objectives":  "Understand the basics of Pipeline Failures Apply Pipeline Failures in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Code Review Strategies",
+                                                  "path":  "/module-1/level-analysis/lesson-2",
+                                                  "objectives":  "Understand the basics of Code Review Strategies Apply Code Review Strategies in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: DevOps Metrics",
+                                                  "path":  "/module-1/level-analysis/lesson-3",
+                                                  "objectives":  "Understand the basics of DevOps Metrics Apply DevOps Metrics in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level application.Value.ToUpper() evel  level application.Value.ToUpper() pplication",
+                             "path":  "/module-1/level-application/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Build Pipelines",
+                                                  "path":  "/module-1/level-application/lesson-1",
+                                                  "objectives":  "Understand the basics of Build Pipelines Apply Build Pipelines in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Release Pipelines",
+                                                  "path":  "/module-1/level-application/lesson-2",
+                                                  "objectives":  "Understand the basics of Release Pipelines Apply Release Pipelines in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Using Azure Boards",
+                                                  "path":  "/module-1/level-application/lesson-3",
+                                                  "objectives":  "Understand the basics of Using Azure Boards Apply Using Azure Boards in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level capstone.Value.ToUpper() evel  level capstone.Value.ToUpper() apstone",
+                             "path":  "/module-1/level-capstone/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: End-to-End CI/CD Project",
+                                                  "path":  "/module-1/level-capstone/lesson-1",
+                                                  "objectives":  "Understand the basics of End-to-End CI/CD Project Apply End-to-End CI/CD Project in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Group Presentation",
+                                                  "path":  "/module-1/level-capstone/lesson-2",
+                                                  "objectives":  "Understand the basics of Group Presentation Apply Group Presentation in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Final Reflection",
+                                                  "path":  "/module-1/level-capstone/lesson-3",
+                                                  "objectives":  "Understand the basics of Final Reflection Apply Final Reflection in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level comprehension.Value.ToUpper() evel  level comprehension.Value.ToUpper() omprehension",
+                             "path":  "/module-1/level-comprehension/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Explaining Pipelines",
+                                                  "path":  "/module-1/level-comprehension/lesson-1",
+                                                  "objectives":  "Understand the basics of Explaining Pipelines Apply Explaining Pipelines in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Reading YAML Configs",
+                                                  "path":  "/module-1/level-comprehension/lesson-2",
+                                                  "objectives":  "Understand the basics of Reading YAML Configs Apply Reading YAML Configs in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: DevOps Vocabulary",
+                                                  "path":  "/module-1/level-comprehension/lesson-3",
+                                                  "objectives":  "Understand the basics of DevOps Vocabulary Apply DevOps Vocabulary in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level evaluation.Value.ToUpper() evel  level evaluation.Value.ToUpper() valuation",
+                             "path":  "/module-1/level-evaluation/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Assessing DevOps Maturity",
+                                                  "path":  "/module-1/level-evaluation/lesson-1",
+                                                  "objectives":  "Understand the basics of Assessing DevOps Maturity Apply Assessing DevOps Maturity in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Choosing Tools",
+                                                  "path":  "/module-1/level-evaluation/lesson-2",
+                                                  "objectives":  "Understand the basics of Choosing Tools Apply Choosing Tools in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Security Posture Review",
+                                                  "path":  "/module-1/level-evaluation/lesson-3",
+                                                  "objectives":  "Understand the basics of Security Posture Review Apply Security Posture Review in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level foundations.Value.ToUpper() evel  level foundations.Value.ToUpper() oundations",
+                             "path":  "/module-1/level-foundations/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Git Basics",
+                                                  "path":  "/module-1/level-foundations/lesson-1",
+                                                  "objectives":  "Understand the basics of Git Basics Apply Git Basics in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Azure DevOps Intro",
+                                                  "path":  "/module-1/level-foundations/lesson-2",
+                                                  "objectives":  "Understand the basics of Azure DevOps Intro Apply Azure DevOps Intro in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Core CI/CD Concepts",
+                                                  "path":  "/module-1/level-foundations/lesson-3",
+                                                  "objectives":  "Understand the basics of Core CI/CD Concepts Apply Core CI/CD Concepts in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         }
+                     ]
+    },
+    {
+        "title":  " module 2.Value.ToUpper() odule  module 2.Value.ToUpper() ",
+        "path":  "/module-2/index",
+        "children":  [
+                         {
+                             "title":  " level analysis.Value.ToUpper() evel  level analysis.Value.ToUpper() nalysis",
+                             "path":  "/module-2/level-analysis/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Pipeline Failures",
+                                                  "path":  "/module-2/level-analysis/lesson-1",
+                                                  "objectives":  "Understand the basics of Pipeline Failures Apply Pipeline Failures in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Code Review Strategies",
+                                                  "path":  "/module-2/level-analysis/lesson-2",
+                                                  "objectives":  "Understand the basics of Code Review Strategies Apply Code Review Strategies in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: DevOps Metrics",
+                                                  "path":  "/module-2/level-analysis/lesson-3",
+                                                  "objectives":  "Understand the basics of DevOps Metrics Apply DevOps Metrics in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level application.Value.ToUpper() evel  level application.Value.ToUpper() pplication",
+                             "path":  "/module-2/level-application/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Build Pipelines",
+                                                  "path":  "/module-2/level-application/lesson-1",
+                                                  "objectives":  "Understand the basics of Build Pipelines Apply Build Pipelines in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Release Pipelines",
+                                                  "path":  "/module-2/level-application/lesson-2",
+                                                  "objectives":  "Understand the basics of Release Pipelines Apply Release Pipelines in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Using Azure Boards",
+                                                  "path":  "/module-2/level-application/lesson-3",
+                                                  "objectives":  "Understand the basics of Using Azure Boards Apply Using Azure Boards in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level capstone.Value.ToUpper() evel  level capstone.Value.ToUpper() apstone",
+                             "path":  "/module-2/level-capstone/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: End-to-End CI/CD Project",
+                                                  "path":  "/module-2/level-capstone/lesson-1",
+                                                  "objectives":  "Understand the basics of End-to-End CI/CD Project Apply End-to-End CI/CD Project in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Group Presentation",
+                                                  "path":  "/module-2/level-capstone/lesson-2",
+                                                  "objectives":  "Understand the basics of Group Presentation Apply Group Presentation in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Final Reflection",
+                                                  "path":  "/module-2/level-capstone/lesson-3",
+                                                  "objectives":  "Understand the basics of Final Reflection Apply Final Reflection in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level comprehension.Value.ToUpper() evel  level comprehension.Value.ToUpper() omprehension",
+                             "path":  "/module-2/level-comprehension/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Explaining Pipelines",
+                                                  "path":  "/module-2/level-comprehension/lesson-1",
+                                                  "objectives":  "Understand the basics of Explaining Pipelines Apply Explaining Pipelines in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Reading YAML Configs",
+                                                  "path":  "/module-2/level-comprehension/lesson-2",
+                                                  "objectives":  "Understand the basics of Reading YAML Configs Apply Reading YAML Configs in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: DevOps Vocabulary",
+                                                  "path":  "/module-2/level-comprehension/lesson-3",
+                                                  "objectives":  "Understand the basics of DevOps Vocabulary Apply DevOps Vocabulary in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level evaluation.Value.ToUpper() evel  level evaluation.Value.ToUpper() valuation",
+                             "path":  "/module-2/level-evaluation/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Assessing DevOps Maturity",
+                                                  "path":  "/module-2/level-evaluation/lesson-1",
+                                                  "objectives":  "Understand the basics of Assessing DevOps Maturity Apply Assessing DevOps Maturity in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Choosing Tools",
+                                                  "path":  "/module-2/level-evaluation/lesson-2",
+                                                  "objectives":  "Understand the basics of Choosing Tools Apply Choosing Tools in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Security Posture Review",
+                                                  "path":  "/module-2/level-evaluation/lesson-3",
+                                                  "objectives":  "Understand the basics of Security Posture Review Apply Security Posture Review in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level foundations.Value.ToUpper() evel  level foundations.Value.ToUpper() oundations",
+                             "path":  "/module-2/level-foundations/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Git Basics",
+                                                  "path":  "/module-2/level-foundations/lesson-1",
+                                                  "objectives":  "Understand the basics of Git Basics Apply Git Basics in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Azure DevOps Intro",
+                                                  "path":  "/module-2/level-foundations/lesson-2",
+                                                  "objectives":  "Understand the basics of Azure DevOps Intro Apply Azure DevOps Intro in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Core CI/CD Concepts",
+                                                  "path":  "/module-2/level-foundations/lesson-3",
+                                                  "objectives":  "Understand the basics of Core CI/CD Concepts Apply Core CI/CD Concepts in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         }
+                     ]
+    },
+    {
+        "title":  " module 3.Value.ToUpper() odule  module 3.Value.ToUpper() ",
+        "path":  "/module-3/index",
+        "children":  [
+                         {
+                             "title":  " level analysis.Value.ToUpper() evel  level analysis.Value.ToUpper() nalysis",
+                             "path":  "/module-3/level-analysis/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Pipeline Failures",
+                                                  "path":  "/module-3/level-analysis/lesson-1",
+                                                  "objectives":  "Understand the basics of Pipeline Failures Apply Pipeline Failures in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Code Review Strategies",
+                                                  "path":  "/module-3/level-analysis/lesson-2",
+                                                  "objectives":  "Understand the basics of Code Review Strategies Apply Code Review Strategies in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: DevOps Metrics",
+                                                  "path":  "/module-3/level-analysis/lesson-3",
+                                                  "objectives":  "Understand the basics of DevOps Metrics Apply DevOps Metrics in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level application.Value.ToUpper() evel  level application.Value.ToUpper() pplication",
+                             "path":  "/module-3/level-application/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Build Pipelines",
+                                                  "path":  "/module-3/level-application/lesson-1",
+                                                  "objectives":  "Understand the basics of Build Pipelines Apply Build Pipelines in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Release Pipelines",
+                                                  "path":  "/module-3/level-application/lesson-2",
+                                                  "objectives":  "Understand the basics of Release Pipelines Apply Release Pipelines in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Using Azure Boards",
+                                                  "path":  "/module-3/level-application/lesson-3",
+                                                  "objectives":  "Understand the basics of Using Azure Boards Apply Using Azure Boards in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level capstone.Value.ToUpper() evel  level capstone.Value.ToUpper() apstone",
+                             "path":  "/module-3/level-capstone/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: End-to-End CI/CD Project",
+                                                  "path":  "/module-3/level-capstone/lesson-1",
+                                                  "objectives":  "Understand the basics of End-to-End CI/CD Project Apply End-to-End CI/CD Project in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Group Presentation",
+                                                  "path":  "/module-3/level-capstone/lesson-2",
+                                                  "objectives":  "Understand the basics of Group Presentation Apply Group Presentation in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Final Reflection",
+                                                  "path":  "/module-3/level-capstone/lesson-3",
+                                                  "objectives":  "Understand the basics of Final Reflection Apply Final Reflection in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level comprehension.Value.ToUpper() evel  level comprehension.Value.ToUpper() omprehension",
+                             "path":  "/module-3/level-comprehension/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Explaining Pipelines",
+                                                  "path":  "/module-3/level-comprehension/lesson-1",
+                                                  "objectives":  "Understand the basics of Explaining Pipelines Apply Explaining Pipelines in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Reading YAML Configs",
+                                                  "path":  "/module-3/level-comprehension/lesson-2",
+                                                  "objectives":  "Understand the basics of Reading YAML Configs Apply Reading YAML Configs in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: DevOps Vocabulary",
+                                                  "path":  "/module-3/level-comprehension/lesson-3",
+                                                  "objectives":  "Understand the basics of DevOps Vocabulary Apply DevOps Vocabulary in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level evaluation.Value.ToUpper() evel  level evaluation.Value.ToUpper() valuation",
+                             "path":  "/module-3/level-evaluation/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Assessing DevOps Maturity",
+                                                  "path":  "/module-3/level-evaluation/lesson-1",
+                                                  "objectives":  "Understand the basics of Assessing DevOps Maturity Apply Assessing DevOps Maturity in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Choosing Tools",
+                                                  "path":  "/module-3/level-evaluation/lesson-2",
+                                                  "objectives":  "Understand the basics of Choosing Tools Apply Choosing Tools in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Security Posture Review",
+                                                  "path":  "/module-3/level-evaluation/lesson-3",
+                                                  "objectives":  "Understand the basics of Security Posture Review Apply Security Posture Review in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         },
+                         {
+                             "title":  " level foundations.Value.ToUpper() evel  level foundations.Value.ToUpper() oundations",
+                             "path":  "/module-3/level-foundations/index",
+                             "children":  [
+                                              {
+                                                  "duration":  "15m",
+                                                  "title":  "Lesson 1: Git Basics",
+                                                  "path":  "/module-3/level-foundations/lesson-1",
+                                                  "objectives":  "Understand the basics of Git Basics Apply Git Basics in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "20m",
+                                                  "title":  "Lesson 2: Azure DevOps Intro",
+                                                  "path":  "/module-3/level-foundations/lesson-2",
+                                                  "objectives":  "Understand the basics of Azure DevOps Intro Apply Azure DevOps Intro in Azure DevOps scenarios"
+                                              },
+                                              {
+                                                  "duration":  "25m",
+                                                  "title":  "Lesson 3: Core CI/CD Concepts",
+                                                  "path":  "/module-3/level-foundations/lesson-3",
+                                                  "objectives":  "Understand the basics of Core CI/CD Concepts Apply Core CI/CD Concepts in Azure DevOps scenarios"
+                                              }
+                                          ]
+                         }
+                     ]
+    }
+]
